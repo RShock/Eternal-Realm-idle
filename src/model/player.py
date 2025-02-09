@@ -22,7 +22,7 @@ class Player(BattleEntity):
             "health": self.health,
             "id": self.id,
             "type": "player",
-            "part": self.part
+            "part": "ally" if self.part == 0 else "enemy"
         }
 
     # def can_play(self, card: Treasure) -> bool:

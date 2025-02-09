@@ -13,7 +13,7 @@
             "health": 2,
             "id": 1,
             "type": "player",
-            "part": 0
+            "part": "ally"
         }
     },
     {
@@ -30,7 +30,7 @@
             "health": 2,
             "id": 2,
             "type": "player",
-            "part": 1
+            "part": "enemy"
         }
     },
     {

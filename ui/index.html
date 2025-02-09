@@ -12,36 +12,59 @@
     <hr>
     <h3>卡牌详情</h3>
     <div id="card-preview">
-        <img id="card-preview-image" src="" alt="卡牌大图" style="display: none; width: 100%; max-width: 200px;">
+        <img id="card-preview-image" src="" alt="卡牌大图">
         <div id="card-preview-info"></div>
     </div>
 </div>
 
 <div class="battle-container">
-    <!-- 敌方区域 -->
-    <div class="battle-row row-1">
-        <div class="player-area enemy-area">
+<div class="avatar_row enemy-area">
+    <div class="avatar-player enemy">
+        <img src="path_to_enemy_avatar.png" class="avatar-image">
+        <div class="stats-overlay">
+            <span class="attack">0</span>
+            <span class="health">2</span>
         </div>
-    </div>
-
-    <!-- 敌方随从区域 -->
-    <div class="battle-row row-2 cards-row enemy-cards">
-        <!-- 动态插入卡牌 -->
-    </div>
-
-    <!-- 我方随从区域 -->
-    <div class="battle-row row-3 cards-row ally-cards">
-        <!-- 动态插入卡牌 -->
-    </div>
-
-    <!-- 我方区域 -->
-    <div class="battle-row row-4">
-        <div class="player-area ally-area">
+        <div class="mana-display">
+            <div class="mana-item water">水：1</div>
         </div>
     </div>
 </div>
 
-<script src="dist/js/scripts.js"></script>
-<script src="dist/js/show_card.js"></script>
+<div class="cards-row enemy-cards">
+    <div class="card">
+        <img src="placeholder_card.png" class="card-image">
+        <div class="stats-overlay">
+            <span class="attack">1</span>
+            <span class="health">3</span>
+        </div>
+    </div>
+</div>
+
+<div class="cards-row ally-cards">
+    <div class="card">
+        <img src="placeholder_card.png" class="card-image">
+        <div class="stats-overlay">
+            <span class="attack">1</span>
+            <span class="health">2</span>
+        </div>
+    </div>
+</div>
+
+<div class="avatar_row ally-area">
+    <div class="avatar-player ally">
+        <img src="path_to_ally_avatar.png" class="avatar-image">
+        <div class="stats-overlay">
+            <span class="attack">0</span>
+            <span class="health">2</span>
+        </div>
+        <div class="mana-display">
+            <div class="mana-item fire">火：1</div>
+            <div class="mana-item fire">火：1</div>
+        </div>
+    </div>
+</div>
+
+</div>
 </body>
 </html>
