@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>统一布局战场</title>
+    <link rel="stylesheet" href="dist/css/styles.css">
+</head>
+<body>
+<div class="sidebar">
+    <h3>战斗日志</h3>
+    <div id="log-area"></div>
+    <hr>
+    <h3>卡牌详情</h3>
+    <div id="card-preview">
+        <img id="card-preview-image" src="" alt="卡牌大图" style="display: none; width: 100%; max-width: 200px;">
+        <div id="card-preview-info"></div>
+    </div>
+</div>
+
+<div class="battle-container">
+    <!-- 敌方区域 -->
+    <div class="battle-row row-1">
+        <div class="player-area enemy-area">
+        </div>
+    </div>
+
+    <!-- 敌方随从区域 -->
+    <div class="battle-row row-2 cards-row enemy-cards">
+        <!-- 动态插入卡牌 -->
+    </div>
+
+    <!-- 我方随从区域 -->
+    <div class="battle-row row-3 cards-row ally-cards">
+        <!-- 动态插入卡牌 -->
+    </div>
+
+    <!-- 我方区域 -->
+    <div class="battle-row row-4">
+        <div class="player-area ally-area">
+        </div>
+    </div>
+</div>
+
+<script src="dist/js/scripts.js"></script>
+<script src="dist/js/show_card.js"></script>
+</body>
+</html>

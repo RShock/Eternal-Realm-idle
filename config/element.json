@@ -1,0 +1,13 @@
+
+{
+    "element_relationships": {
+        "FIRE": {
+            "strong_against": ["WOOD"],
+            "weak_against": ["WATER"]
+        },
+        "WATER": {
+            "strong_against": ["FIRE"],
+            "weak_against": ["EARTH"]
+        }
+    }
+}

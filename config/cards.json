@@ -1,0 +1,33 @@
+[
+    {
+        "id": "fire_spirit_root",
+        "name": "火灵根",
+        "cost": {"FIRE": 1},
+        "attack": 1,
+        "health": 2,
+        "type": "TREASURE",
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "ADD_ELEMENT_RESONANCE"
+            }
+        ],
+        "buffs": []
+    },
+    {
+        "id": "swift_wind_sword",
+        "name": "疾风剑",
+        "cost": {"FIRE": 2},
+        "attack": 4,
+        "health": 3,
+        "type": "TREASURE",
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "BONUS_DAMAGE",
+                "value": 2
+            }
+        ],
+        "buffs": ["SWIFT_ATTACK_5"]
+    }
+]
