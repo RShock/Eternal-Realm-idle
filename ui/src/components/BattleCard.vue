@@ -72,7 +72,14 @@ const handleLeave = () => {
 }
 
 .stats-overlay {
+      position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
   font-size: 14px;
-  padding: 6px !important;
 }
 </style>
