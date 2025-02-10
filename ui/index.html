@@ -3,68 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>统一布局战场</title>
-    <link rel="stylesheet" href="dist/css/styles.css">
 </head>
 <body>
-<div class="sidebar">
-    <h3>战斗日志</h3>
-    <div id="log-area"></div>
-    <hr>
-    <h3>卡牌详情</h3>
-    <div id="card-preview">
-        <img id="card-preview-image" src="" alt="卡牌大图">
-        <div id="card-preview-info"></div>
-    </div>
-</div>
-
-<div class="battle-container">
-<div class="avatar_row enemy-area">
-    <div class="avatar-player enemy">
-        <img src="path_to_enemy_avatar.png" class="avatar-image">
-        <div class="stats-overlay">
-            <span class="attack">0</span>
-            <span class="health">2</span>
-        </div>
-        <div class="mana-display">
-            <div class="mana-item water">水：1</div>
-        </div>
-    </div>
-</div>
-
-<div class="cards-row enemy-cards">
-    <div class="card">
-        <img src="placeholder_card.png" class="card-image">
-        <div class="stats-overlay">
-            <span class="attack">1</span>
-            <span class="health">3</span>
-        </div>
-    </div>
-</div>
-
-<div class="cards-row ally-cards">
-    <div class="card">
-        <img src="placeholder_card.png" class="card-image">
-        <div class="stats-overlay">
-            <span class="attack">1</span>
-            <span class="health">2</span>
-        </div>
-    </div>
-</div>
-
-<div class="avatar_row ally-area">
-    <div class="avatar-player ally">
-        <img src="path_to_ally_avatar.png" class="avatar-image">
-        <div class="stats-overlay">
-            <span class="attack">0</span>
-            <span class="health">2</span>
-        </div>
-        <div class="mana-display">
-            <div class="mana-item fire">火：1</div>
-            <div class="mana-item fire">火：1</div>
-        </div>
-    </div>
-</div>
-
-</div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
 </body>
 </html>
