@@ -1,4 +1,3 @@
-<!-- src/components/AvatarPlayer.vue -->
 <template>
   <div
     class="avatar-player"

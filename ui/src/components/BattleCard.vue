@@ -16,7 +16,7 @@
 
 <script setup>
 import { defineProps, computed } from 'vue'
-import { useCardStore } from '../stores/card' // 需要Pinia store管理状态
+import { useCardStore } from '@/stores/card'
 
 const props = defineProps({
   cardId: String,

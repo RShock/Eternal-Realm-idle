@@ -26,9 +26,9 @@ def output_files(folder_path='.', show_stats=True):
 
         for filename in files:
             # 跳过 'package.json' 和 'package-lock.json' 文件
-            if filename in ['package.json', 'package-lock.json', 'output.py', 'log.json']:
+            if filename in ['package.json', 'package-lock.json', 'output.py']:
                 continue
-
+            print(f"{filename} out")
             # 处理所有文件类型
             file_path = os.path.join(root, filename)
             output += f"**{file_path} :\n"

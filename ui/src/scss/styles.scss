@@ -1,11 +1,11 @@
 // 基础布局
 #app {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
 body {
   margin: 0;
@@ -41,17 +41,17 @@ body {
     min-height: 160px;
   }
 }
+
 // 卡牌和头像的数值蒙版通用样式
 .stats-overlay {
   background: linear-gradient(
                   to right,
-                  rgba(255, 50, 50, 0.8), // 左侧红色
-                  rgba(50, 150, 255, 0.8) // 右侧蓝色
+                  rgba(255, 50, 50, 0.8),
+                  rgba(50, 150, 255, 0.8)
   );
-  backdrop-filter: brightness(0.7); // 增加暗色叠加
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3); // 增加内阴影提升层次感
+  backdrop-filter: brightness(0.7);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
 
-  // 保留原有其他属性
   position: absolute;
   bottom: 0;
   left: 0;
@@ -63,7 +63,6 @@ body {
   border-radius: 0 0 8px 8px;
 }
 
-// 阵营间距调整
 .enemy-area {
   padding-bottom: 30px;
 }

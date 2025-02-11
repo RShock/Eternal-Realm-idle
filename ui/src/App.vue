@@ -69,7 +69,6 @@ const allyCards = ref([
 </script>
 
 <style lang="scss">
-@import './src/scss/styles.scss';
 
 .main-layout {
   display: flex;
@@ -77,15 +76,4 @@ const allyCards = ref([
   width: 100%;
 }
 
-/* 调整原SCSS中需要全局生效的样式 */
-.battle-container {
-  .avatar_row {
-    // 保持原有布局样式
-  }
-
-  .cards-row {
-    // 保持原有布局样式
-    gap: 20px; // 增加间距
-  }
-}
 </style>
