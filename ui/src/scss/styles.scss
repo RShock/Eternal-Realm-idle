@@ -70,3 +70,24 @@ body {
 .ally-area {
   padding-top: 30px;
 }
+
+// 入场动画通用样式
+@keyframes entity-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enter-active {
+  animation: entity-enter 0.5s ease-out forwards;
+}
+
+// 卡牌特殊动画
+.battle-card {
+  transition: transform 0.3s, opacity 0.3s;
+}

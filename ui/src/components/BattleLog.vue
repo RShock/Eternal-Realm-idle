@@ -21,6 +21,7 @@ import { useLogStore } from '@/stores/log'
 const logStore = useLogStore()
 const displayLogs = ref([])
 const logArea = ref(null)
+let intervalId = null
 
 // 监听播放进度
 watch(() => logStore.currentIndex, (newIndex) => {
@@ -40,14 +41,31 @@ const scrollToBottom = () => {
   }
 }
 
-onMounted(async () => {
-  await loadLogs()
-  startLogPlayback()
+onMounted(() => {
+  startLogPlayback() // 注意这里不需要加 await
 })
 
 onUnmounted(() => {
-  clearInterval(intervalId) // 清除定时器防止内存泄漏
+  clearInterval(intervalId)
+  logStore.reset() // 清理状态
 })
+const startLogPlayback = async () => {
+  try {
+    // 调用 Store 的方法
+    await logStore.loadLogs()
+    intervalId = setInterval(() => {
+      if (logStore.currentIndex < logStore.rawLogs.length) {
+        displayLogs.value.push(logStore.rawLogs[logStore.currentIndex].log)
+        logStore.currentIndex++
+        scrollToBottom()
+      } else {
+        clearInterval(intervalId)
+      }
+    }, 1000)
+  } catch (error) {
+    console.error('播放失败:', error)
+  }
+}
 </script>
 
 <!-- 样式部分保持不变 -->

@@ -26,16 +26,6 @@ import { ref } from 'vue'
 
 const currentCard = ref(null)
 
-// 示例数据
-setTimeout(() => {
-  currentCard.value = {
-    name: '火球术',
-    image: 'placeholder_card.png',
-    attack: 3,
-    health: 0,
-    description: '对目标造成3点伤害'
-  }
-}, 1500)
 </script>
 
 <style scoped>

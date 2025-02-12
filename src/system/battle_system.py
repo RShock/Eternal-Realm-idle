@@ -68,7 +68,8 @@ class Battle:
         card: Treasure = next((c for c in player.hand if compare_dicts(c.mana_cost, player.mana)), None)
         if not card:
             return False
-        self._log("play_card", f"{player.name}打出了{card.name}", player_id=player.id, card=card.to_dict())
+        self._log("play_card", f"{player.name}打出了{card.name}", player_id=player.id, card=card.to_dict(),
+                  part="ally" if player.part == 0 else "enemy")
 
         player.hand.remove(card)
         self.field[player.part].append(card)

@@ -44,7 +44,7 @@ def test_battle():
     #     print(f"{p2.name}: {p2.hand}")
     #
     # 输出battle.battle_log到system\html_gen\log.json
-    with open("../ui/log.json", "w", encoding='utf-8') as f:
+    with open("../ui/public/log.json", "w", encoding='utf-8') as f:
         json.dump(battle.battle_log, f, indent=4, ensure_ascii=False)
 
 

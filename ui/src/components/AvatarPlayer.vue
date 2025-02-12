@@ -1,7 +1,7 @@
 <template>
   <div
-    class="avatar-player"
-    :class="[type, { 'ally': isAlly, 'enemy': !isAlly }]"
+      class="avatar-player"
+      :class="[type, { 'ally': isAlly, 'enemy': !isAlly , 'enter-active': visible }, ]"
   >
     <img :src="avatarImage" class="avatar-image">
     <div class="stats-overlay">
@@ -10,10 +10,10 @@
     </div>
     <div class="mana-display">
       <div
-        v-for="(mana, index) in manas"
-        :key="index"
-        class="mana-item"
-        :class="mana.type"
+          v-for="(mana, index) in manas"
+          :key="index"
+          class="mana-item"
+          :class="mana.type"
       >
         {{ mana.typeLabel }}：{{ mana.count }}
       </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import {computed} from 'vue'
 
 const props = defineProps({
   type: {
@@ -36,7 +36,8 @@ const props = defineProps({
   manas: {
     type: Array,
     default: () => [] // 格式示例：[{ type: 'fire', count: 1 }]
-  }
+  },
+  visible: Boolean
 })
 
 const isAlly = computed(() => props.type === 'ally')
@@ -49,10 +50,10 @@ const typeLabelMap = {
 
 // 添加本地类型标签
 const manasWithLabel = computed(() =>
-  props.manas.map(mana => ({
-    ...mana,
-    typeLabel: typeLabelMap[mana.type] || '未知'
-  }))
+    props.manas.map(mana => ({
+      ...mana,
+      typeLabel: typeLabelMap[mana.type] || '未知'
+    }))
 )
 </script>
 
@@ -74,6 +75,17 @@ const manasWithLabel = computed(() =>
   &.enemy:hover {
     border-color: #ff6666;
     transform: scale(1.05);
+  }
+
+  .avatar-player {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+  }
+
+  .avatar-player.enter-active {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -105,10 +117,21 @@ const manasWithLabel = computed(() =>
     white-space: nowrap;
     font-size: 12px;
 
-    &.fire { color: #ff6666; }
-    &.water { color: #66aaff; }
-    &.earth { color: #66cc66; }
-    &.air { color: #cccccc; }
+    &.fire {
+      color: #ff6666;
+    }
+
+    &.water {
+      color: #66aaff;
+    }
+
+    &.earth {
+      color: #66cc66;
+    }
+
+    &.air {
+      color: #cccccc;
+    }
   }
 }
 </style>
