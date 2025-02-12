@@ -7,18 +7,18 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/scss/styles.scss";` // 推荐添加全局scss文件
+        api: 'modern-compiler',
+        additionalData: `@use "@/scss/styles.scss" as *;`,
       }
     }
   },
   build: {
     assetsInlineLimit: 4096,
-    outDir: '../dist', // 建议指定构建输出目录到外层
+    outDir: '../dist',
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      // '~': path.resolve(__dirname, './public') // 可选添加其他别名
     }
   }
 })
