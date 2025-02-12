@@ -4,7 +4,7 @@ import {computed, ref} from 'vue'
 export const useLogStore = defineStore('log', () => {
     // 状态
     const rawLogs = ref([])      // 原始日志数据
-    const currentIndex = ref(0)  // 当前播放到的日志索引
+    const currentIndex = ref(-1)  // 当前播放到的日志索引
     const isPlaying = ref(false) // 是否正在播放
 
     // 方法
@@ -24,7 +24,7 @@ export const useLogStore = defineStore('log', () => {
     }
 
     const reset = () => {
-        currentIndex.value = 0
+        currentIndex.value = -1
         isPlaying.value = false
     }
     // 添加获取当前日志的方法

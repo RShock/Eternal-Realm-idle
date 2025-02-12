@@ -13,12 +13,14 @@ const logStore = useLogStore()
 let intervalId = null
 
 const start = async () => {
+  clearInterval(intervalId) // 先清除旧计时器
   await logStore.loadLogs()
   logStore.reset()
-  logStore.startPlayback()
 
+  // 统一在此处控制播放
   intervalId = setInterval(() => {
-    if (logStore.currentIndex < logStore.rawLogs.length - 1) {
+    if (logStore.currentIndex < logStore.rawLogs.length) {
+      console.log(logStore.currentIndex)
       logStore.currentIndex++
     } else {
       clearInterval(intervalId)
