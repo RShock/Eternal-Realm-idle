@@ -24,7 +24,7 @@
             :card-id="card.id"
             :attack="card.attack"
             :health="card.health"
-            :card-image="card.image || '/default_card.png'"
+            :card-image="`/public/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
             :visible="card.visible"
         />
       </div>
@@ -35,7 +35,8 @@
             :card-id="card.id"
             :attack="card.attack"
             :health="card.health"
-            :card-image="card.image || '/default_card.png'"
+            :card-image="`/public/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
+
             :visible="card.visible"
         />
       </div>
