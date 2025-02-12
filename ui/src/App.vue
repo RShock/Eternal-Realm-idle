@@ -1,6 +1,7 @@
 <!-- src/App.vue -->
 <template>
   <div class="main-layout">
+    <LogController />
     <BattleLog />
 
     <div class="battle-container">
@@ -57,6 +58,7 @@ import { ref } from 'vue'
 import BattleLog from './components/BattleLog.vue'
 import AvatarPlayer from './components/AvatarPlayer.vue'
 import BattleCard from './components/BattleCard.vue'
+import LogController from "@/components/LogController.vue";
 
 // 示例数据
 const enemyCards = ref([

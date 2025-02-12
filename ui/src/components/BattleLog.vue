@@ -13,39 +13,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import {ref, onMounted, onUnmounted, watch} from 'vue'
 import CardPreview from './CardPreview.vue'
 
-const logs = ref([]) // 从log.json加载的原始数据
-const displayLogs = ref([]) // 实际显示的日志
+import { useLogStore } from '@/stores/log'
+
+const logStore = useLogStore()
+const displayLogs = ref([])
 const logArea = ref(null)
-let logIndex = 0
-let intervalId = null
 
-// 加载日志数据
-const loadLogs = async () => {
-  try {
-    const response = await fetch('/log.json')
-    const data = await response.json()
-    logs.value = data.map(item => item.log) // 提取log字段
-  } catch (error) {
-    console.error('加载日志失败:', error)
-    logs.value = ['日志加载失败']
+// 监听播放进度
+watch(() => logStore.currentIndex, (newIndex) => {
+  if (newIndex < logStore.rawLogs.length) {
+    displayLogs.value.push(logStore.rawLogs[newIndex].log)
+    scrollToBottom()
   }
-}
-
-// 启动日志播放
-const startLogPlayback = () => {
-  intervalId = setInterval(() => {
-    if (logIndex < logs.value.length) {
-      displayLogs.value.push(logs.value[logIndex])
-      scrollToBottom()
-      logIndex++
-    } else {
-      clearInterval(intervalId)
-    }
-  }, 1000)
-}
+})
 
 // 自动滚动
 const scrollToBottom = () => {
