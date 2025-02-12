@@ -28,6 +28,8 @@ def output_files(folder_path='.', show_stats=True):
             # 跳过 'package.json' 和 'package-lock.json' 文件
             if filename in ['package.json', 'package-lock.json', 'output.py']:
                 continue
+            if filename.endswith(".png") or filename.endswith(".jpg"):
+                continue
             print(f"{filename} out")
             # 处理所有文件类型
             file_path = os.path.join(root, filename)
@@ -49,7 +51,8 @@ def output_files(folder_path='.', show_stats=True):
     # 打印行数和字符数的统计信息（仅在 show_stats 为 True 时）
     if show_stats:
         total_files = len(output.split('='))
-        total_lines = sum([len(file_content.splitlines()) for file_content in output.split('=') if file_content.strip()])
+        total_lines = sum(
+            [len(file_content.splitlines()) for file_content in output.split('=') if file_content.strip()])
         total_chars = sum([len(file_content) for file_content in output.split('=') if file_content.strip()])
 
         print("统计信息：")

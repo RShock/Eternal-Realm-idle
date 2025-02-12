@@ -40,7 +40,6 @@
             :visible="card.visible"
         />
       </div>
-
       <div class="avatar_row ally-area">
         <AvatarPlayer
             v-for="(player, index) in entityStore.players.ally"

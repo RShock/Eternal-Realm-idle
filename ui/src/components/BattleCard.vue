@@ -1,10 +1,10 @@
 <!-- src/components/BattleCard.vue -->
 <template>
   <div
-    class="battle-card"
-    :class="{ 'enemy-card': isEnemy, 'ally-card': !isEnemy }"
-    @mouseenter="handleHover"
-    @mouseleave="handleLeave"
+      class="battle-card"
+      :class="{ 'enemy-card': isEnemy, 'ally-card': !isEnemy }"
+      @mouseenter="handleHover"
+      @mouseleave="handleLeave"
   >
     <img :src="cardImage" class="card-image">
     <div class="stats-overlay">
@@ -15,15 +15,15 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
-import { useCardStore } from '@/stores/card'
+import {defineProps, computed} from 'vue'
+import {useCardStore} from '@/stores/card'
 
 const props = defineProps({
   cardId: String,
   attack: Number,
   health: Number,
   cardImage: String,
-  isEnemy: Boolean
+  isEnemy: Boolean,
 })
 
 const cardStore = useCardStore()
@@ -53,7 +53,7 @@ const handleLeave = () => {
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
     &.ally-card {
       outline: 2px solid #66aaff;
@@ -72,14 +72,14 @@ const handleLeave = () => {
 }
 
 .stats-overlay {
-      position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 6px;
-    display: flex;
-    justify-content: space-between;
-    color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px;
+  display: flex;
+  justify-content: space-between;
+  color: white;
   font-size: 14px;
 }
 </style>

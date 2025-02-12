@@ -22,12 +22,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useCardStore } from '@/stores/card'
+import { storeToRefs } from 'pinia'
 
-const currentCard = ref(null)
-
+const cardStore = useCardStore()
+const { currentCard } = storeToRefs(cardStore)
 </script>
-
 <style scoped>
 #card-preview {
   margin-top: 20px;
