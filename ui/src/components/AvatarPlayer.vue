@@ -15,7 +15,7 @@
           class="mana-item"
           :class="mana.type"
       >
-        {{ mana.typeLabel }}：{{ mana.count }}
+        {{ mana.type }}：{{ mana.count }}
       </div>
     </div>
   </div>
@@ -33,28 +33,23 @@ const props = defineProps({
   avatarImage: String,
   attack: Number,
   health: Number,
-  manas: {
-    type: Array,
-    default: () => [] // 格式示例：[{ type: 'fire', count: 1 }]
+  mana: { // 修改属性名并调整类型
+    type: Object,
+    default: () => ({})
   },
   visible: Boolean
 })
-
+// 将对象转换为数组格式
+const manas = computed(() => {
+  return Object.entries(props.mana || {})
+      .filter(([_, count]) => count > 0)
+      .map(([type, count]) => ({
+        type: type.toUpperCase(),
+        count
+      }))
+})
 const isAlly = computed(() => props.type === 'ally')
-const typeLabelMap = {
-  fire: '火',
-  water: '水',
-  earth: '土',
-  air: '风'
-}
 
-// 添加本地类型标签
-const manasWithLabel = computed(() =>
-    props.manas.map(mana => ({
-      ...mana,
-      typeLabel: typeLabelMap[mana.type] || '未知'
-    }))
-)
 </script>
 
 <style scoped>

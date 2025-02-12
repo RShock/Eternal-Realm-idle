@@ -15,6 +15,7 @@
             :attack="player.attack"
             :health="player.health"
             :visible="player.visible"
+            :mana="player.mana"
         />
       </div>
       <div class="cards-row enemy-cards">
@@ -49,6 +50,7 @@
             :attack="player.attack"
             :health="player.health"
             :visible="player.visible"
+            :mana="player.mana"
         />
       </div>
     </div>
