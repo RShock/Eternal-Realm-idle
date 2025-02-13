@@ -61,7 +61,9 @@ const arrowStyle = computed(() => {
     '--length': `${length}px`,
     '--angle': `${angle}deg`,
     '--start-x': `${startPos.value.x}px`,
-    '--start-y': `${startPos.value.y}px`
+    '--start-y': `${startPos.value.y}px`,
+    '--end-x': `${endPos.value.x}px`,
+    '--end-y': `${endPos.value.y}px`
   }
 })
 
@@ -84,9 +86,7 @@ watch(() => [props.attackerId, props.defenderId], updatePositions)
   top: 0;
   left: 0;
   position: fixed;
-  transform:
-    translate(var(--start-x), var(--start-y))
-    rotate(var(--angle));
+  transform: translate(var(--end-x), var(--end-y)) rotate(var(--angle));
   transform-origin: 0 0;
   pointer-events: none;
   z-index: 1000;
