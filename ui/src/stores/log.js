@@ -6,6 +6,32 @@ export const useLogStore = defineStore('log', () => {
     const rawLogs = ref([])      // 原始日志数据
     const currentIndex = ref(-1)  // 当前播放到的日志索引
     const isPlaying = ref(false) // 是否正在播放
+    const typeDurations = {
+        add_player: 300,
+        new_turn: 1500,
+        play_card: 800,
+        attack: 800,
+        deal_damage: 500,
+        destroy: 1000,
+        default: 1000
+    }
+
+// 添加这个公共方法
+    const getLogBatch = (startIndex) => {
+        const startLog = rawLogs.value[startIndex]
+        if (!startLog) return {count: 0}
+
+        // 处理连续dealDamage的特殊情况
+        if (startLog.type === 'deal_damage') {
+            let count = 1
+            while (rawLogs.value[startIndex + count]?.type === 'deal_damage') {
+                count++
+            }
+            return {type: 'deal_damage', count}
+        }
+
+        return {type: startLog.type, count: 1}
+    }
 
     // 方法
     const loadLogs = async () => {
@@ -50,6 +76,8 @@ export const useLogStore = defineStore('log', () => {
         pausePlayback,
         reset,
         currentLog,
-        getLogsByType
+        getLogsByType,
+        typeDurations,
+        getLogBatch
     }
 })

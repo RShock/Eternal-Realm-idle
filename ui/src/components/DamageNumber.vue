@@ -33,18 +33,39 @@ const positionStyle = computed(() => ({
   top: `${position.value.y}px`
 }))
 
+// onMounted(() => {
+//   // 定位到受伤者中心
+//   const targetElem = document.querySelector(`[data-entity-id="${props.defenderId}"]`)
+//   if (targetElem) {
+//     const rect = targetElem.getBoundingClientRect()
+//     position.value = {
+//       x: rect.left + rect.width/2 - 20,
+//       y: rect.top + rect.height/2 - 20
+//     }
+//   }
+//
+
+// })
+
 onMounted(() => {
-  // 定位到受伤者中心
   const targetElem = document.querySelector(`[data-entity-id="${props.defenderId}"]`)
   if (targetElem) {
     const rect = targetElem.getBoundingClientRect()
     position.value = {
-      x: rect.left + rect.width/2 - 20,
-      y: rect.top + rect.height/2 - 20
+      x: rect.left + rect.width/2,
+      y: rect.top + rect.height/2
+    }
+    console.log(targetElem, rect)
+  } else {
+    console.warn(`未找到目标实体：${props.defenderId}`)
+    // 默认显示在屏幕中间
+    position.value = {
+      x: window.innerWidth/2,
+      y: window.innerHeight/2
     }
   }
 
-  // 执行动画
+    // 执行动画
   gsap.fromTo(damageEl.value,
     { opacity: 1, scale: 0.5, y: 0 },
     {

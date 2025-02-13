@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {createApp, ref} from 'vue'
 import BattleLog from './components/BattleLog.vue'
 import AvatarPlayer from './components/AvatarPlayer.vue'
 import BattleCard from './components/BattleCard.vue'
@@ -73,6 +73,7 @@ import {watch} from 'vue'
 import {useLogStore} from '@/stores/log'
 import {useEntityStore} from '@/stores/entities'
 import AttackArrow from "@/components/AttackArrow.vue";
+import DamageNumber from "@/components/DamageNumber.vue";
 
 const logStore = useLogStore()
 const entityStore = useEntityStore()
@@ -81,6 +82,27 @@ const currentAttack = ref(null)
 // 监听日志变化
 watch(() => logStore.currentLog, (newLog) => {
   if (!newLog) return
+
+const createDamageNumber = (log) => {
+  // 创建容器元素
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+
+  // 创建应用实例
+  const damageApp = createApp(DamageNumber, {
+    damage: log.damage,
+    defenderId: log.defender_id
+  })
+
+  // 挂载并保存实例
+  const instance = damageApp.mount(container)
+
+  // 自动卸载（1.5秒后）
+  setTimeout(() => {
+    damageApp.unmount()
+    document.body.removeChild(container)
+  }, 1500)
+}
 
   switch (newLog.type) {
     case 'add_player':
@@ -106,6 +128,10 @@ watch(() => logStore.currentLog, (newLog) => {
         const cards = entityStore.cards[newLog.part]
         cards[cards.length - 1].visible = true
       }, 50)
+      break
+    case 'deal_damage':
+      // 创建伤害数字组件
+createDamageNumber(newLog)
       break
   }
 })

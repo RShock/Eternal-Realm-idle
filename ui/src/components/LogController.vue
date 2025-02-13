@@ -34,16 +34,27 @@ const togglePlay = async () => {
     pausePlayback()
   }
 }
+const processLogs = async () => {
+  while (logStore.isPlaying && logStore.currentIndex < logStore.rawLogs.length - 1) {
+    const nextIndex = logStore.currentIndex + 1
+    const batch = logStore.getLogBatch(nextIndex)
+    const currentType = logStore.rawLogs[nextIndex].type
 
+    // 更新当前索引
+    logStore.currentIndex += batch.count
+
+    // 获取持续时间
+    const duration = batch.type === 'deal_damage' && batch.count > 1
+      ? logStore.typeDurations.deal_damage * Math.min(batch.count, 3) // 最多延长3倍时间
+      : logStore.typeDurations[currentType] || logStore.typeDurations.default
+
+    await new Promise(resolve => setTimeout(resolve, duration))
+  }
+  pausePlayback()
+}
 const startPlayback = () => {
   logStore.startPlayback()
-  intervalId.value = setInterval(() => {
-    if (logStore.currentIndex < logStore.rawLogs.length - 1) {
-      logStore.currentIndex++
-    } else {
-      pausePlayback()
-    }
-  }, 1000)
+  processLogs()
 }
 
 const pausePlayback = () => {

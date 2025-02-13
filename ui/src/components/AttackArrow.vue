@@ -50,11 +50,6 @@ const updatePositions = () => {
     startPos.value = getElementCenter(attackerElem)
     endPos.value = getElementCenter(defenderElem)
   }
-  // 调试日志
-  console.log('Attacker Element:', attackerElem)
-  console.log('Defender Element:', defenderElem)
-  console.log('Start Position:', startPos.value)
-  console.log('End Position:', endPos.value)
 }
 
 // 初始化时和窗口变化时更新位置
