@@ -1,6 +1,7 @@
 <template>
   <div
       class="avatar-player"
+      :data-entity-id="entityId"
       :class="[type, { 'ally': isAlly, 'enemy': !isAlly , 'enter-active': visible }, ]"
   >
     <img :src="avatarImage" class="avatar-image">
@@ -37,7 +38,11 @@ const props = defineProps({
     type: Object,
     default: () => ({})
   },
-  visible: Boolean
+  visible: Boolean,
+  entityId: {
+    type: String,
+    required: true
+  },
 })
 // 将对象转换为数组格式
 const manas = computed(() => {

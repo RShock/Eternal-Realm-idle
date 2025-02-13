@@ -3,6 +3,7 @@
   <div
       class="battle-card"
       :class="{ 'enemy-card': isEnemy, 'ally-card': !isEnemy }"
+      :data-entity-id="cardId"
       @mouseenter="handleHover"
       @mouseleave="handleLeave"
   >

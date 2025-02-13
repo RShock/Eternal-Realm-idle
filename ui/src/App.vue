@@ -3,15 +3,20 @@
   <div class="main-layout">
     <LogController/>
     <BattleLog/>
-
+    <AttackArrow
+        v-if="currentAttack"
+        :attacker-id="currentAttack.attackerId"
+        :defender-id="currentAttack.defenderId"
+    />
     <div class="battle-container">
       <!-- 敌方区域 -->
       <div class="avatar_row enemy-area">
         <AvatarPlayer
             v-for="(player, index) in entityStore.players.enemy"
             :key="`enemy-${index}`"
+            :entity-id="player.id"
             :type="player.part"
-            :avatar-image="`/public/image/avatars/female.png` || '/default_enemy.png'"
+            :avatar-image="`/image/avatars/female.png` || '/default_enemy.png'"
             :attack="player.attack"
             :health="player.health"
             :visible="player.visible"
@@ -25,7 +30,7 @@
             :card-id="card.id"
             :attack="card.attack"
             :health="card.health"
-            :card-image="`/public/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
+            :card-image="`/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
             :visible="card.visible"
         />
       </div>
@@ -36,7 +41,7 @@
             :card-id="card.id"
             :attack="card.attack"
             :health="card.health"
-            :card-image="`/public/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
+            :card-image="`/image/cards/${card.name}.png`  || '/public/image/cards/default_card.png'"
 
             :visible="card.visible"
         />
@@ -46,7 +51,8 @@
             v-for="(player, index) in entityStore.players.ally"
             :key="`enemy-${index}`"
             :type="player.part"
-            :avatar-image="`/public/image/avatars/male.png` || '/default_enemy.png'"
+            :entity-id="player.id"
+            :avatar-image="`/image/avatars/male.png` || '/default_enemy.png'"
             :attack="player.attack"
             :health="player.health"
             :visible="player.visible"
@@ -66,9 +72,11 @@ import LogController from "@/components/LogController.vue";
 import {watch} from 'vue'
 import {useLogStore} from '@/stores/log'
 import {useEntityStore} from '@/stores/entities'
+import AttackArrow from "@/components/AttackArrow.vue";
 
 const logStore = useLogStore()
 const entityStore = useEntityStore()
+const currentAttack = ref(null)
 
 // 监听日志变化
 watch(() => logStore.currentLog, (newLog) => {
@@ -83,7 +91,16 @@ watch(() => logStore.currentLog, (newLog) => {
         players[players.length - 1].visible = true
       }, 50) // 等待DOM更新
       break
-
+    case 'attack':
+      currentAttack.value = {
+        attackerId: newLog.attacker_id,
+        defenderId: newLog.defender_id
+      }
+      // 1秒后清除箭头
+      // setTimeout(() => {
+      //   currentAttack.value = null
+      // }, 1000)
+      break
     case 'play_card':
       entityStore.addCard(newLog.card, newLog.part)
       setTimeout(() => {
@@ -93,6 +110,7 @@ watch(() => logStore.currentLog, (newLog) => {
       break
   }
 })
+
 </script>
 
 <style lang="scss">

@@ -1,199 +1,233 @@
 [
-    {
-        "type": "add_player",
-        "log": "玩家修真者加入战斗",
-        "player": {
-            "name": "修真者",
-            "attack": 0,
-            "mana": {
-                "FIRE": 1
-            },
-            "speed": 2,
-            "buffs": [],
-            "health": 2,
-            "id": "1",
-            "type": "player",
-            "part": "ally"
-        }
-    },
-    {
-        "type": "add_player",
-        "log": "玩家魔修加入战斗",
-        "player": {
-            "name": "魔修",
-            "attack": 0,
-            "mana": {
-                "WATER": 1
-            },
-            "speed": 1,
-            "buffs": [],
-            "health": 2,
-            "id": "2",
-            "type": "player",
-            "part": "enemy"
-        }
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
-        "turn": 1,
-        "current_player_id": "1"
-    },
-    {
-        "type": "play_card",
-        "log": "修真者打出了火球",
-        "player_id": "1",
-        "card": {
-            "name": "火球",
-            "attack": 1,
-            "mana_cost": {
-                "FIRE": 1
-            },
-            "destroyed": false,
-            "buffs": [],
-            "health": 2,
-            "id": "5",
-            "type": "treasure"
-        },
-        "part": "ally"
-    },
-    {
-        "type": "attack",
-        "log": "火球攻击了魔修",
-        "attacker_id": "5",
-        "defender_id": "2"
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对魔修造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "5",
-        "defender_id": "2"
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
-        "turn": 2,
-        "current_player_id": "2"
-    },
-    {
-        "type": "play_card",
-        "log": "魔修打出了水球",
-        "player_id": "2",
-        "card": {
-            "name": "水球",
-            "attack": 1,
-            "mana_cost": {
-                "WATER": 1
-            },
-            "destroyed": false,
-            "buffs": [],
-            "health": 3,
-            "id": "8",
-            "type": "treasure"
-        },
-        "part": "enemy"
-    },
-    {
-        "type": "attack",
-        "log": "水球攻击了火球",
-        "attacker_id": "8",
-        "defender_id": "5"
-    },
-    {
-        "type": "deal_damage",
-        "log": "水球对火球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "8",
-        "defender_id": "5"
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对水球造成了1点伤害！",
-        "damage": 1,
-        "defender_id": "5",
-        "attacker_id": "8"
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
-        "turn": 3,
-        "current_player_id": "1"
-    },
-    {
-        "type": "attack",
-        "log": "火球攻击了水球",
-        "attacker_id": "5",
-        "defender_id": "8"
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对水球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "5",
-        "defender_id": "8"
-    },
-    {
-        "type": "deal_damage",
-        "log": "水球对火球造成了1点伤害！",
-        "damage": 1,
-        "defender_id": "8",
-        "attacker_id": "5"
-    },
-    {
-        "type": "destroy",
-        "log": "火球被摧毁！",
-        "d_type": "treasure",
-        "id": "5"
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
-        "turn": 4,
-        "current_player_id": "2"
-    },
-    {
-        "type": "attack",
-        "log": "水球攻击了修真者",
-        "attacker_id": "8",
-        "defender_id": "1"
-    },
-    {
-        "type": "deal_damage",
-        "log": "水球对修真者造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "8",
-        "defender_id": "1"
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
-        "turn": 5,
-        "current_player_id": "1"
-    },
-    {
-        "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
-        "turn": 6,
-        "current_player_id": "2"
-    },
-    {
-        "type": "attack",
-        "log": "水球攻击了修真者",
-        "attacker_id": "8",
-        "defender_id": "1"
-    },
-    {
-        "type": "deal_damage",
-        "log": "水球对修真者造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "8",
-        "defender_id": "1"
-    },
-    {
-        "type": "destroy",
-        "log": "修真者死亡！",
-        "d_type": "player",
-        "id": "1"
+  {
+    "type": "add_player",
+    "log": "玩家修真者加入战斗",
+    "player": {
+      "name": "修真者",
+      "attack": 0,
+      "mana": {
+        "FIRE": 1
+      },
+      "speed": 2,
+      "buffs": [],
+      "health": 2,
+      "id": "1",
+      "type": "player",
+      "part": "ally"
     }
+  },
+  {
+    "type": "add_player",
+    "log": "玩家修真者加入战斗",
+    "player": {
+      "name": "修真者",
+      "attack": 0,
+      "mana": {
+        "FIRE": 1
+      },
+      "speed": 2,
+      "buffs": [],
+      "health": 2,
+      "id": "111",
+      "type": "player",
+      "part": "ally"
+    }
+  },
+    {
+    "type": "add_player",
+    "log": "玩家修真者加入战斗",
+    "player": {
+      "name": "修真者",
+      "attack": 0,
+      "mana": {
+        "FIRE": 1
+      },
+      "speed": 2,
+      "buffs": [],
+      "health": 2,
+      "id": "1121",
+      "type": "player",
+      "part": "ally"
+    }
+  },
+  {
+    "type": "add_player",
+    "log": "玩家魔修加入战斗",
+    "player": {
+      "name": "魔修",
+      "attack": 0,
+      "mana": {
+        "WATER": 1
+      },
+      "speed": 1,
+      "buffs": [],
+      "health": 2,
+      "id": "2",
+      "type": "player",
+      "part": "enemy"
+    }
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是修真者",
+    "turn": 1,
+    "current_player_id": "1"
+  },
+  {
+    "type": "play_card",
+    "log": "修真者打出了火球",
+    "player_id": "1",
+    "card": {
+      "name": "火球",
+      "attack": 1,
+      "mana_cost": {
+        "FIRE": 1
+      },
+      "destroyed": false,
+      "buffs": [],
+      "health": 2,
+      "id": "5",
+      "type": "treasure"
+    },
+    "part": "ally"
+  },
+  {
+    "type": "attack",
+    "log": "火球攻击了魔修",
+    "attacker_id": "5",
+    "defender_id": "2"
+  },
+  {
+    "type": "deal_damage",
+    "log": "火球对魔修造成了1点伤害！",
+    "damage": 1,
+    "attacker_id": "5",
+    "defender_id": "2"
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是魔修",
+    "turn": 2,
+    "current_player_id": "2"
+  },
+  {
+    "type": "play_card",
+    "log": "魔修打出了水球",
+    "player_id": "2",
+    "card": {
+      "name": "水球",
+      "attack": 1,
+      "mana_cost": {
+        "WATER": 1
+      },
+      "destroyed": false,
+      "buffs": [],
+      "health": 3,
+      "id": "8",
+      "type": "treasure"
+    },
+    "part": "enemy"
+  },
+  {
+    "type": "attack",
+    "log": "水球攻击了火球",
+    "attacker_id": "8",
+    "defender_id": "5"
+  },
+  {
+    "type": "deal_damage",
+    "log": "水球对火球造成了1点伤害！",
+    "damage": 1,
+    "attacker_id": "8",
+    "defender_id": "5"
+  },
+  {
+    "type": "deal_damage",
+    "log": "火球对水球造成了1点伤害！",
+    "damage": 1,
+    "defender_id": "5",
+    "attacker_id": "8"
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是修真者",
+    "turn": 3,
+    "current_player_id": "1"
+  },
+  {
+    "type": "attack",
+    "log": "火球攻击了水球",
+    "attacker_id": "5",
+    "defender_id": "8"
+  },
+  {
+    "type": "deal_damage",
+    "log": "火球对水球造成了1点伤害！",
+    "damage": 1,
+    "attacker_id": "5",
+    "defender_id": "8"
+  },
+  {
+    "type": "deal_damage",
+    "log": "水球对火球造成了1点伤害！",
+    "damage": 1,
+    "defender_id": "8",
+    "attacker_id": "5"
+  },
+  {
+    "type": "destroy",
+    "log": "火球被摧毁！",
+    "d_type": "treasure",
+    "id": "5"
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是魔修",
+    "turn": 4,
+    "current_player_id": "2"
+  },
+  {
+    "type": "attack",
+    "log": "水球攻击了修真者",
+    "attacker_id": "8",
+    "defender_id": "1"
+  },
+  {
+    "type": "deal_damage",
+    "log": "水球对修真者造成了1点伤害！",
+    "damage": 1,
+    "attacker_id": "8",
+    "defender_id": "1"
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是修真者",
+    "turn": 5,
+    "current_player_id": "1"
+  },
+  {
+    "type": "new_turn",
+    "log": "新的回合开始了，当前玩家是魔修",
+    "turn": 6,
+    "current_player_id": "2"
+  },
+  {
+    "type": "attack",
+    "log": "水球攻击了修真者",
+    "attacker_id": "8",
+    "defender_id": "1"
+  },
+  {
+    "type": "deal_damage",
+    "log": "水球对修真者造成了1点伤害！",
+    "damage": 1,
+    "attacker_id": "8",
+    "defender_id": "1"
+  },
+  {
+    "type": "destroy",
+    "log": "修真者死亡！",
+    "d_type": "player",
+    "id": "1"
+  }
 ]
