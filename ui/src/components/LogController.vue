@@ -12,7 +12,7 @@
 
 <script setup>
 import {useLogStore} from '@/stores/log'
-import {computed, onUnmounted, ref} from "vue";
+import {computed, nextTick, onUnmounted, ref} from "vue";
 
 const logStore = useLogStore()
 const intervalId = ref(null)
@@ -34,24 +34,32 @@ const togglePlay = async () => {
     pausePlayback()
   }
 }
+// 修改后的processLogs方法
 const processLogs = async () => {
   while (logStore.isPlaying && logStore.currentIndex < logStore.rawLogs.length - 1) {
-    const nextIndex = logStore.currentIndex + 1
-    const batch = logStore.getLogBatch(nextIndex)
-    const currentType = logStore.rawLogs[nextIndex].type
+    const currentIndex = logStore.currentIndex + 1
+    const batch = logStore.getLogBatch(currentIndex)
 
-    // 更新当前索引
-    logStore.currentIndex += batch.count
-
-    // 获取持续时间
-    const duration = batch.type === 'deal_damage' && batch.count > 1
-      ? logStore.typeDurations.deal_damage * Math.min(batch.count, 3) // 最多延长3倍时间
-      : logStore.typeDurations[currentType] || logStore.typeDurations.default
-
-    await new Promise(resolve => setTimeout(resolve, duration))
+    // 特殊处理连续deal_damage
+    if (batch.type === 'deal_damage') {
+      // 逐个处理但保持相同动画起始时间
+      const startTime = Date.now()
+      for (let i = 0; i < batch.count; i++) {
+        logStore.currentIndex = currentIndex + i
+        await nextTick() // 确保Vue更新
+      }
+      const duration = logStore.typeDurations.deal_damage * Math.min(batch.count, 3)
+      const elapsed = Date.now() - startTime
+      await new Promise(resolve => setTimeout(resolve, duration - elapsed))
+    } else {
+      logStore.currentIndex += batch.count
+      const duration = logStore.typeDurations[batch.type] || logStore.typeDurations.default
+      await new Promise(resolve => setTimeout(resolve, duration))
+    }
   }
   pausePlayback()
 }
+
 const startPlayback = () => {
   logStore.startPlayback()
   processLogs()

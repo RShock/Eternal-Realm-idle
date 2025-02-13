@@ -25,10 +25,12 @@ let intervalId = null
 
 // 监听播放进度
 watch(() => logStore.currentIndex, (newIndex) => {
-  if (newIndex < logStore.rawLogs.length) {
-    displayLogs.value.push(logStore.rawLogs[newIndex].log)
-    scrollToBottom()
-  }
+  const newLogs = logStore.rawLogs
+    .slice(displayLogs.value.length, newIndex + 1)
+    .map(log => log.log)
+
+  displayLogs.value.push(...newLogs)
+  scrollToBottom()
 })
 
 // 自动滚动
