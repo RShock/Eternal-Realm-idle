@@ -11,8 +11,7 @@ export const useLogStore = defineStore('log', () => {
     const loadLogs = async () => {
         try {
             const response = await fetch('/log.json')
-            const data = await response.json()
-            rawLogs.value = data
+            rawLogs.value = await response.json()
         } catch (error) {
             console.error('日志加载失败:', error)
             rawLogs.value = []
@@ -23,11 +22,16 @@ export const useLogStore = defineStore('log', () => {
         isPlaying.value = true
     }
 
+    const pausePlayback = () => {
+        isPlaying.value = false
+    }
+
     const reset = () => {
         currentIndex.value = -1
         isPlaying.value = false
     }
-    // 添加获取当前日志的方法
+
+    // 计算属性
     const currentLog = computed(() => {
         return rawLogs.value[currentIndex.value] || null
     })
@@ -36,12 +40,14 @@ export const useLogStore = defineStore('log', () => {
     const getLogsByType = (type) => {
         return rawLogs.value.filter(log => log.type === type)
     }
+
     return {
         rawLogs,
         currentIndex,
         isPlaying,
         loadLogs,
         startPlayback,
+        pausePlayback,
         reset,
         currentLog,
         getLogsByType

@@ -91,3 +91,18 @@ body {
 .battle-card {
   transition: transform 0.3s, opacity 0.3s;
 }
+
+.battle-card {
+  position: relative;
+  z-index: 100;
+}
+
+.avatar-player {
+  position: relative;
+  z-index: 100;
+}
+
+// 箭头保持在最上层
+.attack-arrow {
+  z-index: 1000;
+}
