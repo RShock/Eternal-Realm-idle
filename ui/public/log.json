@@ -16,23 +16,6 @@
       "part": "ally"
     }
   },
-  {
-    "type": "add_player",
-    "log": "玩家修真者加入战斗",
-    "player": {
-      "name": "修真者",
-      "attack": 0,
-      "mana": {
-        "FIRE": 1
-      },
-      "speed": 2,
-      "buffs": [],
-      "health": 2,
-      "id": "111",
-      "type": "player",
-      "part": "ally"
-    }
-  },
     {
     "type": "add_player",
     "log": "玩家修真者加入战斗",

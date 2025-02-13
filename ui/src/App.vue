@@ -96,10 +96,9 @@ watch(() => logStore.currentLog, (newLog) => {
         attackerId: newLog.attacker_id,
         defenderId: newLog.defender_id
       }
-      // 1秒后清除箭头
-      // setTimeout(() => {
-      //   currentAttack.value = null
-      // }, 1000)
+      setTimeout(() => {
+        currentAttack.value = null
+      }, 1000)
       break
     case 'play_card':
       entityStore.addCard(newLog.card, newLog.part)
