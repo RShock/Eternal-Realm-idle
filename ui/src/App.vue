@@ -8,6 +8,7 @@
         :attacker-id="currentAttack.attackerId"
         :defender-id="currentAttack.defenderId"
     />
+    <TurnIndicator/>
     <div class="battle-container">
       <!-- 敌方区域 -->
       <div class="avatar_row enemy-area">
@@ -75,12 +76,14 @@ import {useEntityStore} from '@/stores/entities'
 import AttackArrow from "@/components/AttackArrow.vue";
 import DamageNumber from "@/components/DamageNumber.vue";
 import {gsap} from "gsap";
+import TurnIndicator from "@/components/TurnIndicator.vue";
+
 const logStore = useLogStore()
 const entityStore = useEntityStore()
 const currentAttack = ref(null)
 
 // 监听日志变化
-watch(() => logStore.currentLog, (newLog) => {
+watch(() => logStore.currentLog, async (newLog) => {
   if (!newLog) return
 
   const createDamageNumber = (log) => {
@@ -133,6 +136,15 @@ watch(() => logStore.currentLog, (newLog) => {
       // 创建伤害数字组件
       createDamageNumber(newLog)
       entityStore.updateHealth(newLog.defender_id, newLog.defender_hp)
+      break
+    case 'new_turn':
+      entityStore.setTurnInfo({
+        ...newLog,
+        visible: true
+      })
+      // 延长该条日志显示时间
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('new_turn')
       break
     case 'destroy':
       const targetId = newLog.id

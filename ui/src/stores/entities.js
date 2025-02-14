@@ -11,7 +11,14 @@ export const useEntityStore = defineStore('entities', () => {
         ally: [],
         enemy: []
     })
+    const currentTurnInfo = ref(null)
 
+    const setTurnInfo = (info) => {
+        currentTurnInfo.value = {
+            ...currentTurnInfo.value, // 保留旧值
+            ...info // 新值覆盖
+        }
+    }
     // 添加玩家
     const addPlayer = (playerData) => {
         const target = playerData.part === 'ally' ? 'ally' : 'enemy'
@@ -33,9 +40,6 @@ export const useEntityStore = defineStore('entities', () => {
         // 从玩家列表移除
         ['ally', 'enemy'].forEach(side => {
             players.value[side] = players.value[side].filter(p => p.id !== id)
-        })
-            // 从卡牌列表移除
-            ['ally', 'enemy'].forEach(side => {
             cards.value[side] = cards.value[side].filter(c => c.id !== id)
         })
     }
@@ -53,5 +57,8 @@ export const useEntityStore = defineStore('entities', () => {
         const allCards = [...cards.value.ally, ...cards.value.enemy]
         return [...allPlayers, ...allCards].find(e => e.id === id)
     }
-    return {players, cards, addPlayer, addCard, findEntity, updateHealth, removeEntity}
+    return {
+        players, cards, addPlayer, addCard, findEntity, updateHealth, removeEntity, currentTurnInfo,
+        setTurnInfo
+    }
 })
