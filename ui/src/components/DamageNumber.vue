@@ -55,7 +55,6 @@ onMounted(() => {
       x: rect.left + rect.width / 2 + Math.random() * 20 - 10, // ±10px随机偏移
       y: rect.top + rect.height / 2 - Math.random() * 30 // 向上随机偏移
     }
-    console.log(targetElem, rect)
   } else {
     console.warn(`未找到目标实体：${props.defenderId}`)
     // 默认显示在屏幕中间

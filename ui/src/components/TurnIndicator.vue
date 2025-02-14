@@ -25,13 +25,7 @@ const playerName = computed(() => {
   const player = entityStore.findEntity(currentTurnInfo.value.current_player_id)
   return player?.name || '未知玩家'
 })
-watch(currentTurnInfo, (newVal) => {
-  console.log('回合信息变化:', newVal)
-}, { deep: true })
 
-watch(visible, (newVal) => {
-  console.log('可见性变化:', newVal) // 调试点3
-})
 const enterAnim = (el, done) => {
   gsap.fromTo(el,
     { scale: 0.5, opacity: 0 },
