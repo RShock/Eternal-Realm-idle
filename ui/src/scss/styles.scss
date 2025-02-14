@@ -106,3 +106,13 @@ body {
 .attack-arrow {
   z-index: 1000;
 }
+
+[data-entity-id] {
+    transition: filter 0.3s ease;
+    will-change: filter, transform, opacity;
+}
+
+// 优化销毁元素的定位
+.avatar-player, .battle-card {
+    transform-box: fill-box; // 保证缩放基于元素中心
+}

@@ -74,7 +74,7 @@ import {useLogStore} from '@/stores/log'
 import {useEntityStore} from '@/stores/entities'
 import AttackArrow from "@/components/AttackArrow.vue";
 import DamageNumber from "@/components/DamageNumber.vue";
-
+import {gsap} from "gsap";
 const logStore = useLogStore()
 const entityStore = useEntityStore()
 const currentAttack = ref(null)
@@ -83,26 +83,26 @@ const currentAttack = ref(null)
 watch(() => logStore.currentLog, (newLog) => {
   if (!newLog) return
 
-const createDamageNumber = (log) => {
-  // 创建容器元素
-  const container = document.createElement('div')
-  document.body.appendChild(container)
+  const createDamageNumber = (log) => {
+    // 创建容器元素
+    const container = document.createElement('div')
+    document.body.appendChild(container)
 
-  // 创建应用实例
-  const damageApp = createApp(DamageNumber, {
-    damage: log.damage,
-    defenderId: log.defender_id
-  })
+    // 创建应用实例
+    const damageApp = createApp(DamageNumber, {
+      damage: log.damage,
+      defenderId: log.defender_id
+    })
 
-  // 挂载并保存实例
-  const instance = damageApp.mount(container)
+    // 挂载并保存实例
+    const instance = damageApp.mount(container)
 
-  // 自动卸载（1.5秒后）
-  setTimeout(() => {
-    damageApp.unmount()
-    document.body.removeChild(container)
-  }, 1500)
-}
+    // 自动卸载（1.5秒后）
+    setTimeout(() => {
+      damageApp.unmount()
+      document.body.removeChild(container)
+    }, 1500)
+  }
 
   switch (newLog.type) {
     case 'add_player':
@@ -131,7 +131,37 @@ const createDamageNumber = (log) => {
       break
     case 'deal_damage':
       // 创建伤害数字组件
-createDamageNumber(newLog)
+      createDamageNumber(newLog)
+      entityStore.updateHealth(newLog.defender_id, newLog.defender_hp)
+      break
+    case 'destroy':
+      const targetId = newLog.id
+      const targetElem = document.querySelector(`[data-entity-id="${targetId}"]`)
+      if (targetElem) {
+        // 创建动画时间线
+        const tl = gsap.timeline()
+
+        // 第一阶段：变灰效果
+        tl.to(targetElem, {
+          duration: 0.2,
+          filter: 'grayscale(1) brightness(0.7)',
+          ease: 'power2.inOut'
+        })
+            // 第二阶段：抖动+缩小消失
+            .to(targetElem, {
+              duration: 0.3,
+              opacity: 0,
+              scale: 0,
+              x: '+=20', // 添加抖动效果
+              ease: 'back.in',
+              onComplete: () => {
+                entityStore.removeEntity(targetId)
+              }
+            })
+      } else {
+        // 如果找不到元素直接移除
+        entityStore.removeEntity(targetId)
+      }
       break
   }
 })

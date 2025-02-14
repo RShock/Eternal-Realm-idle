@@ -8,8 +8,8 @@ export const useLogStore = defineStore('log', () => {
     const isPlaying = ref(false) // 是否正在播放
     const typeDurations = {
         add_player: 300,
-        new_turn: 1500,
-        play_card: 800,
+        new_turn: 1000,
+        play_card: 500,
         attack: 800,
         deal_damage: 500,
         destroy: 1000,

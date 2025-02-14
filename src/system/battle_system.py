@@ -133,17 +133,20 @@ class Battle:
             if dmg_event.attack_deal_damage > 0:
                 defender.health -= dmg_event.attack_deal_damage
                 self._log("deal_damage", f"{attacker.name}对{defender.name}造成了{dmg_event.attack_deal_damage}点伤害！",
-                          damage=dmg_event.attack_deal_damage, attacker_id=attacker.id, defender_id=defender.id)
+                          damage=dmg_event.attack_deal_damage, attacker_id=attacker.id, defender_id=defender.id,
+                          defender_hp=defender.health)
 
             if dmg_event.defend_deal_damage > 0:
                 attacker.health -= dmg_event.defend_deal_damage
                 self._log("deal_damage", f"{defender.name}对{attacker.name}造成了{dmg_event.defend_deal_damage}点伤害！",
-                          damage=dmg_event.attack_deal_damage, defender_id=defender.id, attacker_id=attacker.id)
+                          damage=dmg_event.attack_deal_damage, attacker_id=defender.id, defender_id=attacker.id,
+                          defender_hp=attacker.health)
+
         self._check_death(defender)
         self._check_death(attacker)
 
-#
-# def _direct_attack(self, attacker, defender):
-#     defender.hp -= attacker.attack
-#     print(f"{defender}受到了{attacker.attack}点伤害！")
-#     pass
+        #
+        # def _direct_attack(self, attacker, defender):
+        #     defender.hp -= attacker.attack
+        #     print(f"{defender}受到了{attacker.attack}点伤害！")
+        #     pass

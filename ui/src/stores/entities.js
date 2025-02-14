@@ -29,11 +29,29 @@ export const useEntityStore = defineStore('entities', () => {
             visible: false
         })
     }
-// 在useEntityStore中添加
+    const removeEntity = (id) => {
+        // 从玩家列表移除
+        ['ally', 'enemy'].forEach(side => {
+            players.value[side] = players.value[side].filter(p => p.id !== id)
+        })
+            // 从卡牌列表移除
+            ['ally', 'enemy'].forEach(side => {
+            cards.value[side] = cards.value[side].filter(c => c.id !== id)
+        })
+    }
+
+    const updateHealth = (id, newHealth) => {
+        const entity = findEntity(id)
+        if (entity) {
+            entity.health = newHealth
+        } else {
+            console.error(`未找到实体：${id}`)
+        }
+    }
     const findEntity = (id) => {
         const allPlayers = [...players.value.ally, ...players.value.enemy]
         const allCards = [...cards.value.ally, ...cards.value.enemy]
         return [...allPlayers, ...allCards].find(e => e.id === id)
     }
-    return {players, cards, addPlayer, addCard, findEntity}
+    return {players, cards, addPlayer, addCard, findEntity, updateHealth, removeEntity}
 })
