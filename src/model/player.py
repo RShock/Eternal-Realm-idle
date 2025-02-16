@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from src.core.base import Element, Buff
 from src.core.entity import BattleEntity
+from src.model.basic import Treasure
 
 
 class Player(BattleEntity):
@@ -12,6 +13,7 @@ class Player(BattleEntity):
         self.mana = base_mana
         self.hand: List["Treasure"] = []
         self.part = part
+
     def to_dict(self):
         return {
             "name": self.name,
@@ -30,4 +32,3 @@ class Player(BattleEntity):
     #             not self.played_this_turn and
     #             all(self.mana[e] >= req for e, req in card.mana_cost.items())
     #     )
-

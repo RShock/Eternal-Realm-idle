@@ -52,7 +52,7 @@
             "destroyed": false,
             "buffs": [],
             "health": 2,
-            "id": "5",
+            "id": "4",
             "type": "treasure"
         },
         "part": "ally"
@@ -60,14 +60,14 @@
     {
         "type": "attack",
         "log": "火球攻击了魔修",
-        "attacker_id": "5",
+        "attacker_id": "4",
         "defender_id": "2"
     },
     {
         "type": "deal_damage",
         "log": "火球对魔修造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "5",
+        "attacker_id": "4",
         "defender_id": "2",
         "defender_hp": 1
     },
@@ -90,7 +90,7 @@
             "destroyed": false,
             "buffs": [],
             "health": 3,
-            "id": "8",
+            "id": "10",
             "type": "treasure"
         },
         "part": "enemy"
@@ -98,23 +98,23 @@
     {
         "type": "attack",
         "log": "水球攻击了火球",
-        "attacker_id": "8",
-        "defender_id": "5"
+        "attacker_id": "10",
+        "defender_id": "4"
     },
     {
         "type": "deal_damage",
         "log": "水球对火球造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "8",
-        "defender_id": "5",
+        "attacker_id": "10",
+        "defender_id": "4",
         "defender_hp": 1
     },
     {
         "type": "deal_damage",
         "log": "火球对水球造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "5",
-        "defender_id": "8",
+        "attacker_id": "4",
+        "defender_id": "10",
         "defender_hp": 2
     },
     {
@@ -126,30 +126,30 @@
     {
         "type": "attack",
         "log": "火球攻击了水球",
-        "attacker_id": "5",
-        "defender_id": "8"
+        "attacker_id": "4",
+        "defender_id": "10"
     },
     {
         "type": "deal_damage",
         "log": "火球对水球造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "5",
-        "defender_id": "8",
+        "attacker_id": "4",
+        "defender_id": "10",
         "defender_hp": 1
     },
     {
         "type": "deal_damage",
         "log": "水球对火球造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "8",
-        "defender_id": "5",
+        "attacker_id": "10",
+        "defender_id": "4",
         "defender_hp": 0
     },
     {
         "type": "destroy",
         "log": "火球被摧毁！",
         "d_type": "treasure",
-        "id": "5"
+        "id": "4"
     },
     {
         "type": "new_turn",
@@ -160,14 +160,14 @@
     {
         "type": "attack",
         "log": "水球攻击了修真者",
-        "attacker_id": "8",
+        "attacker_id": "10",
         "defender_id": "1"
     },
     {
         "type": "deal_damage",
         "log": "水球对修真者造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "8",
+        "attacker_id": "10",
         "defender_id": "1",
         "defender_hp": 1
     },
@@ -186,14 +186,14 @@
     {
         "type": "attack",
         "log": "水球攻击了修真者",
-        "attacker_id": "8",
+        "attacker_id": "10",
         "defender_id": "1"
     },
     {
         "type": "deal_damage",
         "log": "水球对修真者造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "8",
+        "attacker_id": "10",
         "defender_id": "1",
         "defender_hp": 0
     },

@@ -5,7 +5,7 @@ from src.core.base import compare_dicts, Element
 from src.core.entity import BattleEntity
 from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent
 from src.model.player import Player
-from src.model.treasure import Treasure
+from src.model.basic import Treasure
 
 event_bus = EventBus()
 

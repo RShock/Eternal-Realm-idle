@@ -1,22 +1,18 @@
 import json
 
 from src.core.base import Element
-from src.model.card import create_cards
 from src.model.player import Player
+from src.model.basic import CardRegistry
 from src.system.battle_system import Battle
 
 def test_battle():
     p1 = Player("修真者", {Element.FIRE: 1}, 2, [], 0)
     p2 = Player("魔修", {Element.WATER: 1}, 1, [], 1)
 
-    all_cards = create_cards()
-    card_dict = {c.name: c for c in all_cards}
-
-    def create_card(card_name:str, owner:Player):
-        card = card_dict[card_name]
-        new_card = card.__deepcopy__()
-        new_card.bind_owner(owner)
-        return new_card
+    def create_card(card_name: str, owner: Player):
+        card = CardRegistry.create_card(card_name)
+        card.bind_owner(owner)
+        return card
 
     # 配置测试卡组
     p1.hand = [
