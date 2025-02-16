@@ -1,7 +1,7 @@
 from typing import List
 
 from src.core.decorator import IDComponent
-from src.core.base import Buff
+from src.core.base_buff import Buff
 
 
 class Entity:
@@ -12,6 +12,8 @@ class Entity:
     def id(self):
         return str(self._id_component.id)
         # return self._id_component.id
+
+
 class BattleEntity(Entity):
     def __init__(self, name: str, attack: int, health: int, buffs: List[Buff] = None):
         super().__init__()
@@ -20,3 +22,8 @@ class BattleEntity(Entity):
         self.health = health
         self.max_health = health
         self.buffs = buffs or []
+
+    def remove_if_exist(self, buff_name):
+        self.buffs = [b for b in self.buffs if b.name != buff_name]
+
+

@@ -27,3 +27,12 @@ class 青竹蜂云剑〇残2:
     hp = 1
     cost_wood = 24
     count = 24
+
+@treasure
+class 硫火雷筒:
+    level = "炼气后期"
+    atk = 12
+    hp = 1
+    cost_fire = 2
+    cost_normal = 1
+    rush = True

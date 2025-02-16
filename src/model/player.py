@@ -1,16 +1,18 @@
 import json
 from typing import Dict, List
 
-from src.core.base import Element, Buff
+from src.core.base import Element
+from src.core.base_buff import Buff
 from src.core.entity import BattleEntity
-from src.model.basic import Treasure
 
 
 class Player(BattleEntity):
+
     def __init__(self, name: str, base_mana: Dict[Element, int], speed: int, buffs: List[Buff], part):
         super().__init__(name, 0, 2, buffs)
         self.speed = speed
         self.mana = base_mana
+        from src.model.basic import Treasure
         self.hand: List["Treasure"] = []
         self.part = part
 

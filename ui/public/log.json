@@ -58,20 +58,6 @@
         "part": "ally"
     },
     {
-        "type": "attack",
-        "log": "火球攻击了魔修",
-        "attacker_id": "4",
-        "defender_id": "2"
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对魔修造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "4",
-        "defender_id": "2",
-        "defender_hp": 1
-    },
-    {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是魔修",
         "turn": 2,
@@ -96,28 +82,6 @@
         "part": "enemy"
     },
     {
-        "type": "attack",
-        "log": "水球攻击了火球",
-        "attacker_id": "10",
-        "defender_id": "4"
-    },
-    {
-        "type": "deal_damage",
-        "log": "水球对火球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "10",
-        "defender_id": "4",
-        "defender_hp": 1
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对水球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "4",
-        "defender_id": "10",
-        "defender_hp": 2
-    },
-    {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是修真者",
         "turn": 3,
@@ -135,7 +99,27 @@
         "damage": 1,
         "attacker_id": "4",
         "defender_id": "10",
+        "defender_hp": 2
+    },
+    {
+        "type": "deal_damage",
+        "log": "水球对火球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "10",
+        "defender_id": "4",
         "defender_hp": 1
+    },
+    {
+        "type": "new_turn",
+        "log": "新的回合开始了，当前玩家是魔修",
+        "turn": 4,
+        "current_player_id": "2"
+    },
+    {
+        "type": "attack",
+        "log": "水球攻击了火球",
+        "attacker_id": "10",
+        "defender_id": "4"
     },
     {
         "type": "deal_damage",
@@ -146,6 +130,14 @@
         "defender_hp": 0
     },
     {
+        "type": "deal_damage",
+        "log": "火球对水球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "4",
+        "defender_id": "10",
+        "defender_hp": 1
+    },
+    {
         "type": "destroy",
         "log": "火球被摧毁！",
         "d_type": "treasure",
@@ -153,8 +145,14 @@
     },
     {
         "type": "new_turn",
+        "log": "新的回合开始了，当前玩家是修真者",
+        "turn": 5,
+        "current_player_id": "1"
+    },
+    {
+        "type": "new_turn",
         "log": "新的回合开始了，当前玩家是魔修",
-        "turn": 4,
+        "turn": 6,
         "current_player_id": "2"
     },
     {
@@ -174,13 +172,13 @@
     {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是修真者",
-        "turn": 5,
+        "turn": 7,
         "current_player_id": "1"
     },
     {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是魔修",
-        "turn": 6,
+        "turn": 8,
         "current_player_id": "2"
     },
     {

@@ -1,6 +1,7 @@
 import json
 from enum import Enum
 
+
 class ElementEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Element):
@@ -16,6 +17,7 @@ class Element(Enum):
     MAGNET = "磁"
     ICE = "冰"
     THUNDER = "雷"
+    NORMAL = "无"
 
     @classmethod
     def elemental_cycle(cls):
@@ -32,9 +34,3 @@ def compare_dicts(A: Dict, B: Dict) -> bool:
     return True
 
 
-class Buff:
-    def __init__(self, name: str, owner, duration: int = -1, x: int = 0):
-        self.name = name
-        self.duration = duration
-        self.x = x  # 可选的用于存储 x 值（如疾袭的 X）
-        self.owner = owner  # 新增owner属性

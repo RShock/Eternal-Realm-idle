@@ -2,7 +2,7 @@ import importlib
 from pathlib import Path
 from typing import Dict, List, Type
 
-from src.core.base import Element, Buff
+from src.core.base import Element
 from src.core.entity import BattleEntity
 from src.model.player import Player
 
@@ -55,9 +55,10 @@ class TreasureMeta(type):
                 attack=attrs.get('atk', attrs.get('attack', 0)),
                 health=attrs.get('hp', attrs.get('health', 0)),
                 mana_cost=cost,
-                buffs=attrs.get('buffs', [])
+                buffs=attrs.get('buffs', []),
             )
             self.count = attrs.get('count', 1)
+            self.rush = attrs.get('rush', False)
 
         attrs['__init__'] = init
         bases = (Treasure,) + bases
@@ -78,9 +79,6 @@ class CardRegistry:
     def auto_discover(cls, package_path: str):
         """ 自动发现卡牌类 """
         package_dir = Path(package_path)
-        print(f"[Debug] 扫描路径: {package_path}")
-        print(f"[Debug] 绝对路径: {package_dir.absolute()}")
-        print(f"[Debug] 路径是否存在: {package_dir.exists()}")
         for py_file in package_dir.glob("*.py"):
             if py_file.name.startswith("__"):
                 continue

@@ -2,8 +2,10 @@ import random
 from typing import Dict
 
 from src.core.base import compare_dicts, Element
+from src.core.base_buff import Buff
 from src.core.entity import BattleEntity
 from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent
+from src.model.buff import 召唤失调
 from src.model.player import Player
 from src.model.basic import Treasure
 
@@ -54,14 +56,14 @@ class Battle:
     def new_turn(self):
         self.turn += 1
         # buff消退
-        for p in self.players + self.field[0] + self.field[1]:
-            expired = []
+        for p in (self.players + self.field[0] + self.field[1]):
+            expired_indices = []
             for i, buff in enumerate(p.buffs):
                 if buff.duration > 0:
                     buff.duration -= 1
                 if buff.duration == 0:
-                    expired.append(i)
-            for i in reversed(expired):
+                    expired_indices.append(i)
+            for i in reversed(expired_indices):
                 p.buffs.pop(i)
 
     def play_card(self, player: Player) -> bool:
@@ -74,6 +76,7 @@ class Battle:
         player.hand.remove(card)
         self.field[player.part].append(card)
         card.owner = player
+        card.buffs.append(召唤失调(card))
         for e, v in card.mana_cost.items():
             player.mana[e] += v
         event_bus.publish(PlayCardEvent(player, card))
@@ -84,10 +87,10 @@ class Battle:
         return " ".join(f"{v}{e.value}" for e, v in mana.items())
 
     def auto_attack(self, attacker: Player):
-        def check_attackable(t: Treasure):
-            if t.destroyed:
+        def check_attackable(t1: Treasure):
+            if t1.destroyed:
                 return False
-            event = CouldAttackEvent(t)
+            event = CouldAttackEvent(t1)
             event_bus.publish(event)
             return not event.prevented
 

@@ -1,9 +1,10 @@
 from collections import defaultdict
-from typing import Type, Callable, Any
+from typing import Type, Callable, TYPE_CHECKING
 
-from src.core.base import Buff
 from src.core.decorator import singleton
-from src.core.entity import Entity, BattleEntity
+
+if TYPE_CHECKING:
+    from src.core.entity import BattleEntity
 
 
 class Event:
@@ -14,7 +15,7 @@ class Event:
 
 
 @singleton
-class EventBus:
+class   EventBus:
     """事件总线"""
 
     def __init__(self):
@@ -31,15 +32,20 @@ class EventBus:
             if event.prevented:
                 break
 
+    def unsubscribe(self, event_type, handler):
+        if handler in self._handlers[event_type]:
+            self._handlers[event_type].remove(handler)
+
+
 class AttackEvent(Event):
-    def __init__(self, source: BattleEntity, target: BattleEntity):
+    def __init__(self, source: "BattleEntity", target: "BattleEntity"):
         super().__init__()
         self.source = source
         self.target = target
 
 
 class DamageEvent(Event):
-    def __init__(self, source: BattleEntity, target: BattleEntity,
+    def __init__(self, source: "BattleEntity", target: "BattleEntity",
                  attack_deal_damage: int, defend_del_damage: int):
         super().__init__()
         self.source = source
@@ -49,38 +55,38 @@ class DamageEvent(Event):
 
 
 class PlayCardEvent(Event):
-    def __init__(self, source: BattleEntity, card):
+    def __init__(self, source: "BattleEntity", card):
         super().__init__()
         self.source = source
         self.card = card
 
 
 class EndTurnEvent(Event):
-    def __init__(self, source: BattleEntity):
+    def __init__(self, source: "BattleEntity"):
         super().__init__()
         self.source = source
 
 
 class EndBattleEvent(Event):
-    def __init__(self, source: BattleEntity):
+    def __init__(self, source: "BattleEntity"):
         super().__init__()
         self.source = source
 
 
 class StartBattleEvent(Event):
-    def __init__(self, source: BattleEntity):
+    def __init__(self, source: "BattleEntity"):
         super().__init__()
         self.source = source
 
 
 class NewTurnEvent(Event):
-    def __init__(self, source: BattleEntity):
+    def __init__(self, source: "BattleEntity"):
         super().__init__()
         self.source = source
 
 
 class AppendBuffEvent(Event):
-    def __init__(self, source: BattleEntity, target: BattleEntity, buff: Buff):
+    def __init__(self, source: "BattleEntity", target: "BattleEntity", buff: "Buff"):
         super().__init__()
         self.source = source
         self.target = target
@@ -89,7 +95,7 @@ class AppendBuffEvent(Event):
 
 
 class CouldAttackEvent(Event):
-    def __init__(self, source: BattleEntity):
+    def __init__(self, attacker: "BattleEntity"):
         super().__init__()
-        self.source = source
+        self.attacker = attacker
         self.prevented = False
