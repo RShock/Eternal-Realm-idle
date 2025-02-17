@@ -29,16 +29,6 @@ def test_battle():
     battle.add_player(p2)
     battle.start_battle()
 
-    #     print("\n===== 最终状态 =====")
-    #     print(f"{p1.name} HP: {p1.hp}")
-    #     print(f"{p2.name} HP: {p2.hp}")
-    #     print("战场:")
-    #     print(f"{p1.name}: {p1.field}")
-    #     print(f"{p2.name}: {p2.field}")
-    #     print("手牌:")
-    #     print(f"{p1.name}: {p1.hand}")
-    #     print(f"{p2.name}: {p2.hand}")
-    #
     # 输出battle.battle_log到system\html_gen\log.json
     with open("../ui/public/log.json", "w", encoding='utf-8') as f:
         json.dump(battle.battle_log, f, indent=4, ensure_ascii=False)

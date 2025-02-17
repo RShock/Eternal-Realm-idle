@@ -26,6 +26,7 @@ class Buff:
 
     def on_expire(self):
         """持续时间耗尽时触发"""
+        self.duration = -1
         self.unsubscribe_all()
 
     def unsubscribe_all(self):
@@ -46,3 +47,12 @@ class Buff:
         self._event_subscriptions.append((event_type, wrapped_handler))
 
         event_bus.subscribe(event_type, wrapped_handler)
+
+    # 更改to str
+    def __str__(self):
+        return f"{self.name}"
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "x": self.x}

@@ -50,12 +50,31 @@
                 "FIRE": 1
             },
             "destroyed": false,
-            "buffs": [],
+            "buffs": [
+                {
+                    "name": "突袭",
+                    "x": 0
+                }
+            ],
             "health": 2,
             "id": "4",
             "type": "treasure"
         },
         "part": "ally"
+    },
+    {
+        "type": "attack",
+        "log": "火球攻击了魔修",
+        "attacker_id": "4",
+        "defender_id": "2"
+    },
+    {
+        "type": "deal_damage",
+        "log": "火球对魔修造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "4",
+        "defender_id": "2",
+        "defender_hp": 1
     },
     {
         "type": "new_turn",

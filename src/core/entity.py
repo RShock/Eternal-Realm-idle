@@ -24,6 +24,11 @@ class BattleEntity(Entity):
         self.buffs = buffs or []
 
     def remove_if_exist(self, buff_name):
+        for b in self.buffs:
+            if b.name == buff_name:
+                self.buffs.remove(b)
+                b.on_expire()
+                return
         self.buffs = [b for b in self.buffs if b.name != buff_name]
 
 

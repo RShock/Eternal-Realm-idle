@@ -13,6 +13,8 @@ class Event:
     def __init__(self):
         self.prevented = False
 
+    def prevent(self):
+        self.prevented = True
 
 @singleton
 class   EventBus:
@@ -31,6 +33,7 @@ class   EventBus:
             handler(event)
             if event.prevented:
                 break
+        return event
 
     def unsubscribe(self, event_type, handler):
         if handler in self._handlers[event_type]:
@@ -86,16 +89,20 @@ class NewTurnEvent(Event):
 
 
 class AppendBuffEvent(Event):
-    def __init__(self, source: "BattleEntity", target: "BattleEntity", buff: "Buff"):
+    def __init__(self, source: "BattleEntity", target: "BattleEntity", buff_name):
         super().__init__()
         self.source = source
         self.target = target
-        self.buff = buff
-        self.prevented = False
+        self.buff_name = buff_name
 
 
 class CouldAttackEvent(Event):
     def __init__(self, attacker: "BattleEntity"):
         super().__init__()
         self.attacker = attacker
-        self.prevented = False
+
+class AddBuffEvent(Event):
+    def __init__(self, source: "BattleEntity", buff: "Buff"):
+        super().__init__()
+        self.source = source
+        self.buff = buff

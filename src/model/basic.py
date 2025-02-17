@@ -4,26 +4,40 @@ from typing import Dict, List, Type
 
 from src.core.base import Element
 from src.core.entity import BattleEntity
+from src.core.event import EventBus, AddBuffEvent, AppendBuffEvent
 from src.model.player import Player
+
+event_bus = EventBus()
 
 
 class Treasure(BattleEntity):
     def __init__(self, name: str, attack: int, health: int, mana_cost: Dict[Element, int],
-                 buffs: List[str] = None):
-        super().__init__(name, attack, health, buffs)
+                 buff_names: List[str] = None):
+        super().__init__(name, attack, health, [])  # 初始buffs为空列表
         self.mana_cost = mana_cost
         self.owner = None
         self.destroyed = False
-        self.count = 1  # 特殊参数，同一张卡可能有很多个。
+        self.count = 1
+        self.buff_names = buff_names or []  # 存储buff名称
 
     def contains_buff(self, buff_name):
         return any(b.name == buff_name for b in self.buffs)
 
     def bind_owner(self, owner: Player):
         self.owner = owner
+        ## 为新创建的卡牌正确添加buff ##
+        from src.model.buff import BuffFactory
+        for buff_name in self.buff_names:
+            buff = BuffFactory.create_buff(buff_name, self)
+            self.buffs.append(buff)
+            event_bus.publish(AppendBuffEvent(self, self, buff))
 
     def __deepcopy__(self):
-        return Treasure(self.name, self.attack, self.health, self.mana_cost.copy(), self.buffs.copy())
+        return Treasure(self.name,
+            self.attack,
+            self.health,
+            self.mana_cost.copy(),
+            self.buff_names.copy())
 
     def to_dict(self):
         return {
@@ -55,10 +69,9 @@ class TreasureMeta(type):
                 attack=attrs.get('atk', attrs.get('attack', 0)),
                 health=attrs.get('hp', attrs.get('health', 0)),
                 mana_cost=cost,
-                buffs=attrs.get('buffs', []),
+                buff_names=attrs.get('buffs', []),
             )
             self.count = attrs.get('count', 1)
-            self.rush = attrs.get('rush', False)
 
         attrs['__init__'] = init
         bases = (Treasure,) + bases
@@ -100,6 +113,7 @@ class CardRegistry:
         if name not in cls._cards:
             raise ValueError(f"未知卡牌: {name}")
         return cls._cards[name]().__deepcopy__()
+
 
 def treasure(cls):
     decorated_cls = TreasureMeta(cls.__name__, (), dict(cls.__dict__))

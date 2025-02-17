@@ -29,8 +29,5 @@ class Player(BattleEntity):
             "part": "ally" if self.part == 0 else "enemy"
         }
 
-    # def can_play(self, card: Treasure) -> bool:
-    #     return (
-    #             not self.played_this_turn and
-    #             all(self.mana[e] >= req for e, req in card.mana_cost.items())
-    #     )
+    def __str__(self):
+        return f"{self.name}{self.health}/{self.max_health})"

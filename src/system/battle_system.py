@@ -4,7 +4,7 @@ from typing import Dict
 from src.core.base import compare_dicts, Element
 from src.core.base_buff import Buff
 from src.core.entity import BattleEntity
-from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent
+from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent, AppendBuffEvent
 from src.model.buff import 召唤失调
 from src.model.player import Player
 from src.model.basic import Treasure
@@ -76,7 +76,9 @@ class Battle:
         player.hand.remove(card)
         self.field[player.part].append(card)
         card.owner = player
-        card.buffs.append(召唤失调(card))
+        if not event_bus.publish(AppendBuffEvent(card, card, "召唤失调")).prevented:
+            card.buffs.append(召唤失调(card))
+
         for e, v in card.mana_cost.items():
             player.mana[e] += v
         event_bus.publish(PlayCardEvent(player, card))

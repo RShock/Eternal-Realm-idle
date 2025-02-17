@@ -1,5 +1,6 @@
 from src.model import basic
 from src.model.basic import treasure
+from src.model.buff import 突袭
 
 
 @treasure
@@ -13,6 +14,7 @@ class 火球:
     atk = 1
     hp = 2
     cost_fire = 1
+    buffs = ["突袭"]
 
 @treasure
 class 青竹蜂云剑〇残:
