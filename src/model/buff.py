@@ -9,12 +9,7 @@ INF = 999999
 class 召唤失调(Buff):
     def __init__(self, owner):
         super().__init__("召唤失调", duration=1, owner=owner)
-        self.subscribe_events()
-
-    def subscribe_events(self):
-        # 使用统一的方法添加订阅
         self.add_subscription(CouldAttackEvent, self.check_could_attack)
-        event_bus.subscribe(CouldAttackEvent, self.check_could_attack)
 
     def check_could_attack(self, event: CouldAttackEvent):
         # 添加有效性检查

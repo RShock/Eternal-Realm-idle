@@ -1,6 +1,7 @@
-from src.core.event import EventBus
+from src.core.event import EventBus, CouldAttackEvent
 
 event_bus = EventBus()
+
 
 class Buff:
     def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0):
@@ -35,4 +36,13 @@ class Buff:
 
     def add_subscription(self, event_type, handler):
         """记录事件订阅"""
-        self._event_subscriptions.append((event_type, handler))
+
+        def wrapped_handler(*args, **kwargs):
+            # 在调用原handler前进行条件判断
+            if self.duration <= 0:
+                return
+            return handler(*args, **kwargs)
+
+        self._event_subscriptions.append((event_type, wrapped_handler))
+
+        event_bus.subscribe(event_type, wrapped_handler)
