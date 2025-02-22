@@ -29,5 +29,10 @@ class Player(BattleEntity):
             "part": "ally" if self.part == 0 else "enemy"
         }
 
+    def add_buff(self, param):
+        from src.model.buff import BuffFactory
+        buff = BuffFactory.create_buff(param, self)
+        self.buffs.append(buff)
+
     def __str__(self):
         return f"{self.name}{self.health}/{self.max_health})"

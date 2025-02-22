@@ -56,7 +56,7 @@
                     "x": 0
                 }
             ],
-            "health": 2,
+            "health": 5,
             "id": "4",
             "type": "treasure"
         },
@@ -93,7 +93,12 @@
                 "WATER": 1
             },
             "destroyed": false,
-            "buffs": [],
+            "buffs": [
+                {
+                    "name": "冰冻",
+                    "x": 0
+                }
+            ],
             "health": 3,
             "id": "10",
             "type": "treasure"
@@ -113,6 +118,12 @@
         "defender_id": "10"
     },
     {
+        "type": "freeze",
+        "log": "水球冻结了火球",
+        "source_id": "10",
+        "target_id": "4"
+    },
+    {
         "type": "deal_damage",
         "log": "火球对水球造成了1点伤害！",
         "damage": 1,
@@ -126,7 +137,7 @@
         "damage": 1,
         "attacker_id": "10",
         "defender_id": "4",
-        "defender_hp": 1
+        "defender_hp": 4
     },
     {
         "type": "new_turn",
@@ -141,12 +152,18 @@
         "defender_id": "4"
     },
     {
+        "type": "freeze",
+        "log": "水球冻结了火球",
+        "source_id": "10",
+        "target_id": "4"
+    },
+    {
         "type": "deal_damage",
         "log": "水球对火球造成了1点伤害！",
         "damage": 1,
         "attacker_id": "10",
         "defender_id": "4",
-        "defender_hp": 0
+        "defender_hp": 3
     },
     {
         "type": "deal_damage",
@@ -157,16 +174,14 @@
         "defender_hp": 1
     },
     {
-        "type": "destroy",
-        "log": "火球被摧毁！",
-        "d_type": "treasure",
-        "id": "4"
-    },
-    {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是修真者",
         "turn": 5,
         "current_player_id": "1"
+    },
+    {
+        "type": "解除冻结",
+        "log": "火球 被解除了冰冻"
     },
     {
         "type": "new_turn",
@@ -176,17 +191,37 @@
     },
     {
         "type": "attack",
-        "log": "水球攻击了修真者",
+        "log": "水球攻击了火球",
         "attacker_id": "10",
-        "defender_id": "1"
+        "defender_id": "4"
+    },
+    {
+        "type": "freeze",
+        "log": "水球冻结了火球",
+        "source_id": "10",
+        "target_id": "4"
     },
     {
         "type": "deal_damage",
-        "log": "水球对修真者造成了1点伤害！",
+        "log": "水球对火球造成了1点伤害！",
         "damage": 1,
         "attacker_id": "10",
-        "defender_id": "1",
-        "defender_hp": 1
+        "defender_id": "4",
+        "defender_hp": 2
+    },
+    {
+        "type": "deal_damage",
+        "log": "火球对水球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "4",
+        "defender_id": "10",
+        "defender_hp": 0
+    },
+    {
+        "type": "destroy",
+        "log": "水球被摧毁！",
+        "d_type": "treasure",
+        "id": "10"
     },
     {
         "type": "new_turn",
@@ -195,29 +230,39 @@
         "current_player_id": "1"
     },
     {
+        "type": "解除冻结",
+        "log": "火球 被解除了冰冻"
+    },
+    {
         "type": "new_turn",
         "log": "新的回合开始了，当前玩家是魔修",
         "turn": 8,
         "current_player_id": "2"
     },
     {
+        "type": "new_turn",
+        "log": "新的回合开始了，当前玩家是修真者",
+        "turn": 9,
+        "current_player_id": "1"
+    },
+    {
         "type": "attack",
-        "log": "水球攻击了修真者",
-        "attacker_id": "10",
-        "defender_id": "1"
+        "log": "火球攻击了魔修",
+        "attacker_id": "4",
+        "defender_id": "2"
     },
     {
         "type": "deal_damage",
-        "log": "水球对修真者造成了1点伤害！",
+        "log": "火球对魔修造成了1点伤害！",
         "damage": 1,
-        "attacker_id": "10",
-        "defender_id": "1",
+        "attacker_id": "4",
+        "defender_id": "2",
         "defender_hp": 0
     },
     {
         "type": "destroy",
-        "log": "修真者死亡！",
+        "log": "魔修死亡！",
         "d_type": "player",
-        "id": "1"
+        "id": "2"
     }
 ]

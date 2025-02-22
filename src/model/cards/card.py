@@ -8,11 +8,12 @@ class 水球:
     atk = 1
     hp = 3
     cost_water = 1
+    buffs = ["冰冻"]
 
 @treasure
 class 火球:
     atk = 1
-    hp = 2
+    hp = 5
     cost_fire = 1
     buffs = ["突袭"]
 

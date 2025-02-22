@@ -1,9 +1,20 @@
 from src.core.event import EventBus, CouldAttackEvent
+from src.core.logger import battle_logger
 
 event_bus = EventBus()
 
 
-class Buff:
+class BuffMeta(type):
+    """元类用于自动记录所有Buff子类"""
+    def __init__(cls, name, bases, attrs):
+        super().__init__(name, bases, attrs)
+        # 跳过基类Buff本身
+        if name != "Buff" and issubclass(cls, Buff):
+            # 确保每个Buff类都有唯一的名称
+            if hasattr(cls, "_registry"):
+                cls._registry[name] = cls
+
+class Buff(metaclass=BuffMeta):
     def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0):
         self.name = name
         self._duration = duration  # 改用私有变量配合属性访问器
@@ -26,7 +37,9 @@ class Buff:
 
     def on_expire(self):
         """持续时间耗尽时触发"""
-        self.duration = -1
+        self._duration = -1
+        # battle_logger.log("debug", f"debug {self.owner.buffs} {self}")
+        self.owner.buffs.remove(self)
         self.unsubscribe_all()
 
     def unsubscribe_all(self):
@@ -49,10 +62,11 @@ class Buff:
         event_bus.subscribe(event_type, wrapped_handler)
 
     # 更改to str
-    def __str__(self):
-        return f"{self.name}"
+    def __repr__(self):
+        return f"【{self.name}】"
 
     def to_dict(self):
         return {
             "name": self.name,
             "x": self.x}
+

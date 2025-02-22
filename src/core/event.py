@@ -65,9 +65,10 @@ class PlayCardEvent(Event):
 
 
 class EndTurnEvent(Event):
-    def __init__(self, source: "BattleEntity"):
+    def __init__(self, turn_owner: "BattleEntity", turn: int):
         super().__init__()
-        self.source = source
+        self.turn_owner = turn_owner
+        self.turn = turn
 
 
 class EndBattleEvent(Event):
@@ -101,8 +102,3 @@ class CouldAttackEvent(Event):
         super().__init__()
         self.attacker = attacker
 
-class AddBuffEvent(Event):
-    def __init__(self, source: "BattleEntity", buff: "Buff"):
-        super().__init__()
-        self.source = source
-        self.buff = buff

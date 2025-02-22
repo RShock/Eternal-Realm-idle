@@ -4,7 +4,7 @@ from typing import Dict, List, Type
 
 from src.core.base import Element
 from src.core.entity import BattleEntity
-from src.core.event import EventBus, AddBuffEvent, AppendBuffEvent
+from src.core.event import EventBus, AppendBuffEvent
 from src.model.player import Player
 
 event_bus = EventBus()
@@ -23,21 +23,27 @@ class Treasure(BattleEntity):
     def contains_buff(self, buff_name):
         return any(b.name == buff_name for b in self.buffs)
 
-    def bind_owner(self, owner: Player):
-        self.owner = owner
-        ## 为新创建的卡牌正确添加buff ##
+    def add_buff(self, buff_name):
         from src.model.buff import BuffFactory
-        for buff_name in self.buff_names:
+        if not self.contains_buff(buff_name):
             buff = BuffFactory.create_buff(buff_name, self)
             self.buffs.append(buff)
             event_bus.publish(AppendBuffEvent(self, self, buff))
+        else:
+            print(f"{self.name}已经拥有了{buff_name}")
+
+    def bind_owner(self, owner: Player):
+        self.owner = owner
+        ## 为新创建的卡牌正确添加buff ##
+        for buff_name in self.buff_names:
+            self.add_buff(buff_name)
 
     def __deepcopy__(self):
         return Treasure(self.name,
-            self.attack,
-            self.health,
-            self.mana_cost.copy(),
-            self.buff_names.copy())
+                        self.attack,
+                        self.health,
+                        self.mana_cost.copy(),
+                        self.buff_names.copy())
 
     def to_dict(self):
         return {

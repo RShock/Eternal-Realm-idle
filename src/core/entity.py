@@ -2,9 +2,10 @@ from typing import List
 
 from src.core.decorator import IDComponent
 from src.core.base_buff import Buff
+from abc import ABC, abstractmethod
 
 
-class Entity:
+class Entity():
     def __init__(self):
         self._id_component = IDComponent()
 
@@ -31,4 +32,5 @@ class BattleEntity(Entity):
                 return
         self.buffs = [b for b in self.buffs if b.name != buff_name]
 
-
+    def add_buff(self, param):
+        raise NotImplementedError
