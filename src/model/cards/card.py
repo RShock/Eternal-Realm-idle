@@ -67,7 +67,7 @@ class 百草囊:
     atk = 2
     hp = 4
     cost_wood = 1
-    buffs = ["回合结束所有友军hp+1"]
+    buffs = ["回合结束所有法宝加buff0_1"]
 
 
 @treasure

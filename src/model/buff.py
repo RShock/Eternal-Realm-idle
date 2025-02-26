@@ -102,9 +102,32 @@ class 回合开始所有法宝加buff(Buff):
                               attack=target.attack,
                               health=target.health)
 
-    # 自动收集buff类用于创建
+
+class 回合结束所有法宝加buff(Buff):
+    def __init__(self, owner):
+        super().__init__("回合结束所有法宝加buff", owner, duration=INF)
+        self.add_subscription(EndTurnEvent, self.on_turn_end)
+
+    def on_turn_end(self, event: NewTurnEvent):
+        player = None
+        if isinstance(self.owner, Treasure):
+            if self.owner in self.owner.owner.hand:
+                return
+            player = self.owner.owner
+        if isinstance(self.owner, Player):
+            player = self.owner
+        if player != event.turn_owner:
+            return
+        for target in player.ally_board:
+            target.attack += self.x
+            target.health += self.y
+            battle_logger.log("modify", f"{target.name}获得了+{self.x}/+{self.y}",
+                              source_id=self.owner.id,
+                              attack=target.attack,
+                              health=target.health)
 
 
+# 自动收集buff类用于创建
 class BuffFactory:
     _registry = {}
 
