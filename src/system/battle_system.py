@@ -4,7 +4,7 @@ from typing import Dict
 from src.core.base import compare_dicts, Element
 from src.core.entity import BattleEntity
 from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent, AppendBuffEvent, \
-    EndTurnEvent
+    EndTurnEvent, NewTurnEvent
 from src.core.logger import JSONLogHandler, ConsoleLogHandler
 from src.model.buff import 召唤失调
 from src.model.player import Player
@@ -42,6 +42,7 @@ class Battle:
                 break
             battle_logger.log("new_turn", f"新的回合开始了，当前玩家是{current_player.name}", turn=self.turn,
                       current_player_id=current_player.id)
+            event_bus.publish(NewTurnEvent(self.turn, current_player))
 
             while self.play_card(current_player):
                 pass

@@ -16,8 +16,9 @@ class Event:
     def prevent(self):
         self.prevented = True
 
+
 @singleton
-class   EventBus:
+class EventBus:
     """事件总线"""
 
     def __init__(self):
@@ -84,9 +85,10 @@ class StartBattleEvent(Event):
 
 
 class NewTurnEvent(Event):
-    def __init__(self, source: "BattleEntity"):
+    def __init__(self, turn: int, owner):
         super().__init__()
-        self.source = source
+        self.turn = turn
+        self.turn_owner = owner
 
 
 class AppendBuffEvent(Event):
@@ -101,4 +103,3 @@ class CouldAttackEvent(Event):
     def __init__(self, attacker: "BattleEntity"):
         super().__init__()
         self.attacker = attacker
-

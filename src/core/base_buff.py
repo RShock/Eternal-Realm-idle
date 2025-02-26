@@ -1,11 +1,15 @@
 from src.core.event import EventBus, CouldAttackEvent
 from src.core.logger import battle_logger
+from typing import TYPE_CHECKING
 
 event_bus = EventBus()
+if TYPE_CHECKING:
+    from src.core.entity import BattleEntity
 
 
 class BuffMeta(type):
     """元类用于自动记录所有Buff子类"""
+
     def __init__(cls, name, bases, attrs):
         super().__init__(name, bases, attrs)
         # 跳过基类Buff本身
@@ -14,11 +18,15 @@ class BuffMeta(type):
             if hasattr(cls, "_registry"):
                 cls._registry[name] = cls
 
+
 class Buff(metaclass=BuffMeta):
-    def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0):
+
+    def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0, y: int = 0):
+
         self.name = name
         self._duration = duration  # 改用私有变量配合属性访问器
         self.x = x
+        self.y = y
         # 订阅记录需要独立存储
         self._event_subscriptions = []
         self.owner = owner
@@ -70,3 +78,7 @@ class Buff(metaclass=BuffMeta):
             "name": self.name,
             "x": self.x}
 
+    def __deepcopy__(self, memo):
+        new_buff = self.__class__(self.name, self.owner, self._duration, self.x)
+        # 不复制_event_subscriptions，同一个buff共用一个subscriptions
+        return new_buff

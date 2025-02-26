@@ -25,12 +25,9 @@ class Treasure(BattleEntity):
 
     def add_buff(self, buff_name):
         from src.model.buff import BuffFactory
-        if not self.contains_buff(buff_name):
-            buff = BuffFactory.create_buff(buff_name, self)
-            self.buffs.append(buff)
-            event_bus.publish(AppendBuffEvent(self, self, buff))
-        else:
-            print(f"{self.name}已经拥有了{buff_name}")
+        buff = BuffFactory.create_buff(buff_name, self)
+        self.buffs.append(buff)
+        event_bus.publish(AppendBuffEvent(self, self, buff))
 
     def bind_owner(self, owner: Player):
         self.owner = owner

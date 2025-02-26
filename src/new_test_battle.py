@@ -6,8 +6,10 @@ from src.model.basic import CardRegistry
 from src.system.battle_system import Battle
 
 def test_battle():
-    p1 = Player("修真者", {Element.FIRE: 1}, 2, [], 0)
-    p2 = Player("魔修", {Element.WATER: 1}, 1, [], 1)
+    battle = Battle()
+
+    p1 = Player("修真者", {Element.FIRE: 1}, 2, [], 0, battle)
+    p2 = Player("魔修", {Element.WATER: 1}, 1, [], 1, battle)
 
     def create_card(card_name: str, owner: Player):
         card = CardRegistry.create_card(card_name)
@@ -24,7 +26,6 @@ def test_battle():
         create_card("水球", p2),
     ]
 
-    battle = Battle()
     battle.add_player(p1)
     battle.add_player(p2)
     battle.start_battle()

@@ -2,8 +2,10 @@ import inspect
 import sys
 
 from src.core.base_buff import Buff
-from src.core.event import AppendBuffEvent, EventBus, CouldAttackEvent, EndTurnEvent, DamageEvent
+from src.core.event import AppendBuffEvent, EventBus, CouldAttackEvent, EndTurnEvent, DamageEvent, NewTurnEvent
 from src.core.logger import battle_logger
+from src.model.basic import Treasure
+from src.model.player import Player
 
 event_bus = EventBus()
 
@@ -48,6 +50,7 @@ class 被冻结(Buff):
             self.on_expire()
             battle_logger.log("解除冻结", f"{self.owner.name} 被解除了冰冻")
 
+
 class 冰冻(Buff):
     """ 冻结对其造成伤害的目标"""
 
@@ -71,7 +74,37 @@ class 冰冻(Buff):
                               target_id=event.source.id)
 
 
-# 自动收集buff类用于创建
+class 嘲讽(Buff):
+    def __init__(self, owner):
+        super().__init__("嘲讽", owner, duration=INF)
+
+
+class 回合开始所有法宝加buff(Buff):
+    def __init__(self, owner):
+        super().__init__("回合开始所有法宝加buff", owner, duration=INF)
+        self.add_subscription(NewTurnEvent, self.on_turn_start)
+
+    def on_turn_start(self, event: NewTurnEvent):
+        player = None
+        if isinstance(self.owner, Treasure):
+            if self.owner in self.owner.owner.hand:
+                return
+            player = self.owner.owner
+        if isinstance(self.owner, Player):
+            player = self.owner
+        if player != event.turn_owner:
+            return
+        for target in player.ally_board:
+            target.attack += self.x
+            target.health += self.y
+            battle_logger.log("modify", f"{target.name}获得了+{self.x}/+{self.y}",
+                              source_id=self.owner.id,
+                              attack=target.attack,
+                              health=target.health)
+
+    # 自动收集buff类用于创建
+
+
 class BuffFactory:
     _registry = {}
 
@@ -91,6 +124,20 @@ class BuffFactory:
         if not cls._registry:
             cls._collect_buff_classes()
 
-        if name not in cls._registry:
-            raise ValueError(f"未知的BUFF类型: {name}")
-        return cls._registry[name](owner)
+        # 解析name中的数字
+        parts = name.split('_')
+        base_part = parts[0]
+
+        # 提取base_part中的数字
+        base_name = ''.join(filter(str.isalpha, base_part))
+        x = int(''.join(filter(str.isdigit, base_part))) if any(c.isdigit() for c in base_part) else 0
+        y = int(parts[1]) if len(parts) > 1 else 0
+
+        if base_name not in cls._registry:
+            raise ValueError(f"未知的BUFF类型: {base_name}")
+
+        # 创建buff并设置x,y值
+        buff = cls._registry[base_name](owner)
+        buff.x = x
+        buff.y = y
+        return buff
