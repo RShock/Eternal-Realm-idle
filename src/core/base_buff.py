@@ -21,7 +21,7 @@ class BuffMeta(type):
 
 class Buff(metaclass=BuffMeta):
 
-    def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0, y: int = 0):
+    def __init__(self, name: str, owner: "BattleEntity", duration: int = -1, x: int = 0, y: int = 0, priority=1):
 
         self.name = name
         self._duration = duration  # 改用私有变量配合属性访问器
@@ -30,6 +30,7 @@ class Buff(metaclass=BuffMeta):
         # 订阅记录需要独立存储
         self._event_subscriptions = []
         self.owner = owner
+        self.priority = priority
 
     @property
     def duration(self):
@@ -46,7 +47,6 @@ class Buff(metaclass=BuffMeta):
     def on_expire(self):
         """持续时间耗尽时触发"""
         self._duration = -1
-        # battle_logger.log("debug", f"debug {self.owner.buffs} {self}")
         self.owner.buffs.remove(self)
         self.unsubscribe_all()
 
@@ -67,7 +67,7 @@ class Buff(metaclass=BuffMeta):
 
         self._event_subscriptions.append((event_type, wrapped_handler))
 
-        event_bus.subscribe(event_type, wrapped_handler)
+        event_bus.subscribe(event_type, wrapped_handler, self.priority)
 
     # 更改to str
     def __repr__(self):

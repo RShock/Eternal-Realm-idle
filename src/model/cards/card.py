@@ -14,7 +14,7 @@ class 水球:
 @treasure
 class 火球:
     atk = 1
-    hp = 5
+    hp =3
     cost_fire = 1
     buffs = ["突袭"]
 
@@ -99,7 +99,6 @@ class 青竹蜂云剑〇残:
     hp = 1
     cost_wood = 12
     count = 12
-
 
 @treasure
 class 青竹蜂云剑〇残2:

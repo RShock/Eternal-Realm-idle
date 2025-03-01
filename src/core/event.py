@@ -48,7 +48,7 @@ class AttackEvent(Event):
         self.target = target
 
 
-class DamageEvent(Event):
+class BeforeDamageEvent(Event):
     def __init__(self, source: "BattleEntity", target: "BattleEntity",
                  attack_deal_damage: int, defend_del_damage: int):
         super().__init__()
@@ -70,6 +70,13 @@ class EndTurnEvent(Event):
         super().__init__()
         self.turn_owner = turn_owner
         self.turn = turn
+
+
+class DeathEvent(Event):
+    def __init__(self, death: "BattleEntity", causer: "BattleEntity"):
+        super().__init__()
+        self.death = death
+        self.causer = causer
 
 
 class EndBattleEvent(Event):
@@ -103,3 +110,27 @@ class CouldAttackEvent(Event):
     def __init__(self, attacker: "BattleEntity"):
         super().__init__()
         self.attacker = attacker
+
+
+class DeathEvent(Event):
+    def __init__(self, source: "BattleEntity"):
+        super().__init__()
+        self.source = source
+
+
+class AfterDamageEvent(Event):
+    def __init__(self, source: "BattleEntity", target: "BattleEntity",
+                 attack_deal_damage: int):
+        super().__init__()
+        self.source = source
+        self.target = target
+        self.attack_deal_damage = attack_deal_damage
+
+
+class DamageEvent(Event):
+    def __init__(self, source: "BattleEntity", target: "BattleEntity",
+                 attack_deal_damage: int):
+        super().__init__()
+        self.source = source
+        self.target = target
+        self.attack_deal_damage = attack_deal_damage

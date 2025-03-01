@@ -9,7 +9,12 @@
                 "FIRE": 1
             },
             "speed": 2,
-            "buffs": [],
+            "buffs": [
+                {
+                    "name": "在场",
+                    "x": 0
+                }
+            ],
             "health": 2,
             "id": "1",
             "type": "player",
@@ -26,7 +31,12 @@
                 "WATER": 1
             },
             "speed": 1,
-            "buffs": [],
+            "buffs": [
+                {
+                    "name": "在场",
+                    "x": 0
+                }
+            ],
             "health": 2,
             "id": "2",
             "type": "player",
@@ -35,7 +45,7 @@
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
+        "log": "第1回合开始了，当前玩家是修真者",
         "turn": 1,
         "current_player_id": "1"
     },
@@ -49,14 +59,13 @@
             "mana_cost": {
                 "FIRE": 1
             },
-            "destroyed": false,
             "buffs": [
                 {
                     "name": "突袭",
                     "x": 0
                 }
             ],
-            "health": 5,
+            "health": 3,
             "id": "4",
             "type": "treasure"
         },
@@ -78,7 +87,7 @@
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
+        "log": "第2回合开始了，当前玩家是魔修",
         "turn": 2,
         "current_player_id": "2"
     },
@@ -92,7 +101,6 @@
             "mana_cost": {
                 "WATER": 1
             },
-            "destroyed": false,
             "buffs": [
                 {
                     "name": "冰冻",
@@ -107,7 +115,7 @@
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
+        "log": "第3回合开始了，当前玩家是修真者",
         "turn": 3,
         "current_player_id": "1"
     },
@@ -118,10 +126,12 @@
         "defender_id": "10"
     },
     {
-        "type": "freeze",
-        "log": "水球冻结了火球",
-        "source_id": "10",
-        "target_id": "4"
+        "type": "deal_damage",
+        "log": "火球对水球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "4",
+        "defender_id": "10",
+        "defender_hp": 2
     },
     {
         "type": "deal_damage",
@@ -132,16 +142,15 @@
         "defender_hp": 2
     },
     {
-        "type": "deal_damage",
-        "log": "水球对火球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "10",
-        "defender_id": "4",
-        "defender_hp": 4
+        "type": "add_buff",
+        "log": "水球冻结了火球",
+        "source_id": "10",
+        "target_id": "4",
+        "buff_type": "冰冻"
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
+        "log": "第4回合开始了，当前玩家是魔修",
         "turn": 4,
         "current_player_id": "2"
     },
@@ -152,10 +161,12 @@
         "defender_id": "4"
     },
     {
-        "type": "freeze",
-        "log": "水球冻结了火球",
-        "source_id": "10",
-        "target_id": "4"
+        "type": "deal_damage",
+        "log": "水球对火球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "10",
+        "defender_id": "4",
+        "defender_hp": 1
     },
     {
         "type": "deal_damage",
@@ -163,33 +174,23 @@
         "damage": 1,
         "attacker_id": "10",
         "defender_id": "4",
-        "defender_hp": 3
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对水球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "4",
-        "defender_id": "10",
         "defender_hp": 1
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
+        "log": "第5回合开始了，当前玩家是修真者",
         "turn": 5,
         "current_player_id": "1"
     },
     {
-        "type": "解除冻结",
-        "log": "火球 被解除了冰冻"
-    },
-    {
-        "type": "解除冻结",
-        "log": "火球 被解除了冰冻"
+        "type": "remove_buff",
+        "log": "火球 被解除了冰冻",
+        "id": "4",
+        "buff_type": "freeze"
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
+        "log": "第6回合开始了，当前玩家是魔修",
         "turn": 6,
         "current_player_id": "2"
     },
@@ -200,10 +201,12 @@
         "defender_id": "4"
     },
     {
-        "type": "freeze",
-        "log": "水球冻结了火球",
-        "source_id": "10",
-        "target_id": "4"
+        "type": "deal_damage",
+        "log": "水球对火球造成了1点伤害！",
+        "damage": 1,
+        "attacker_id": "10",
+        "defender_id": "4",
+        "defender_hp": 0
     },
     {
         "type": "deal_damage",
@@ -211,15 +214,20 @@
         "damage": 1,
         "attacker_id": "10",
         "defender_id": "4",
-        "defender_hp": 2
+        "defender_hp": 0
     },
     {
-        "type": "deal_damage",
-        "log": "火球对水球造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "4",
-        "defender_id": "10",
-        "defender_hp": 0
+        "type": "add_buff",
+        "log": "水球冻结了火球",
+        "source_id": "10",
+        "target_id": "4",
+        "buff_type": "冰冻"
+    },
+    {
+        "type": "destroy",
+        "log": "火球被摧毁！",
+        "d_type": "treasure",
+        "id": "4"
     },
     {
         "type": "destroy",
@@ -229,44 +237,24 @@
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
+        "log": "第7回合开始了，当前玩家是修真者",
         "turn": 7,
         "current_player_id": "1"
     },
     {
-        "type": "解除冻结",
-        "log": "火球 被解除了冰冻"
-    },
-    {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是魔修",
+        "log": "第8回合开始了，当前玩家是魔修",
         "turn": 8,
         "current_player_id": "2"
     },
     {
         "type": "new_turn",
-        "log": "新的回合开始了，当前玩家是修真者",
+        "log": "第9回合开始了，当前玩家是修真者",
         "turn": 9,
         "current_player_id": "1"
     },
     {
-        "type": "attack",
-        "log": "火球攻击了魔修",
-        "attacker_id": "4",
-        "defender_id": "2"
-    },
-    {
-        "type": "deal_damage",
-        "log": "火球对魔修造成了1点伤害！",
-        "damage": 1,
-        "attacker_id": "4",
-        "defender_id": "2",
-        "defender_hp": 0
-    },
-    {
-        "type": "destroy",
-        "log": "魔修死亡！",
-        "d_type": "player",
-        "id": "2"
+        "type": "end",
+        "log": "战斗结束，回合数已达上限"
     }
 ]

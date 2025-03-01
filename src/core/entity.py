@@ -34,3 +34,7 @@ class BattleEntity(Entity):
 
     def add_buff(self, param):
         raise NotImplementedError
+
+    def has_buff(self, buff_name):
+        return any(b.name == buff_name for b in self.buffs)
+

@@ -15,8 +15,7 @@ class Treasure(BattleEntity):
                  buff_names: List[str] = None):
         super().__init__(name, attack, health, [])  # 初始buffs为空列表
         self.mana_cost = mana_cost
-        self.owner = None
-        self.destroyed = False
+        self.owner: Player | None = None
         self.count = 1
         self.buff_names = buff_names or []  # 存储buff名称
 
@@ -47,12 +46,17 @@ class Treasure(BattleEntity):
             "name": self.name,
             "attack": self.attack,
             "mana_cost": {element.name: value for element, value in self.mana_cost.items()},
-            "destroyed": self.destroyed,
             "buffs": [b.to_dict() for b in self.buffs],
             "health": self.health,
             "id": self.id,
             "type": "treasure"
         }
+
+    def has_buff(self, buff_name):
+        return any(b.name == buff_name for b in self.buffs)
+
+    def __str__(self):
+        return f"{self.name}({self.attack}/{self.health}/{self.max_health})"
 
 
 class TreasureMeta(type):

@@ -3,8 +3,8 @@ from typing import Dict
 
 from src.core.base import compare_dicts, Element
 from src.core.entity import BattleEntity
-from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, DamageEvent, AppendBuffEvent, \
-    EndTurnEvent, NewTurnEvent
+from src.core.event import EventBus, PlayCardEvent, CouldAttackEvent, AttackEvent, BeforeDamageEvent, AppendBuffEvent, \
+    EndTurnEvent, NewTurnEvent, AfterDamageEvent, DamageEvent
 from src.core.logger import JSONLogHandler, ConsoleLogHandler
 from src.model.buff import 召唤失调
 from src.model.player import Player
@@ -40,7 +40,7 @@ class Battle:
             if self.turn >= 10:
                 battle_logger.log("end", "战斗结束，回合数已达上限")
                 break
-            battle_logger.log("new_turn", f"新的回合开始了，当前玩家是{current_player.name}", turn=self.turn,
+            battle_logger.log("new_turn", f"第{self.turn}回合开始了，当前玩家是{current_player.name}", turn=self.turn,
                       current_player_id=current_player.id)
             event_bus.publish(NewTurnEvent(self.turn, current_player))
 
@@ -64,10 +64,6 @@ class Battle:
             for i, buff in enumerate(p.buffs):
                 if buff.duration > 0:
                     buff.duration -= 1
-            #     if buff.duration == 0:
-            #         expired_indices.append(i)
-            # for i in reversed(expired_indices):
-            #     p.buffs.pop(i)
 
     def play_card(self, player: Player) -> bool:
         card: Treasure = next((c for c in player.hand if compare_dicts(c.mana_cost, player.mana)), None)
@@ -78,6 +74,7 @@ class Battle:
 
         player.hand.remove(card)
         self.field[player.part].append(card)
+        card.add_buff("在场")
         card.owner = player
         if not event_bus.publish(AppendBuffEvent(card, card, "召唤失调")).prevented:
             card.buffs.append(召唤失调(card))
@@ -93,7 +90,7 @@ class Battle:
 
     def auto_attack(self, attacker: Player):
         def check_attackable(t1: Treasure):
-            if t1.destroyed:
+            if t1.has_buff("死亡"):
                 return False
             event = CouldAttackEvent(t1)
             event_bus.publish(event)
@@ -105,7 +102,7 @@ class Battle:
         our_field = self.field[attacker.part]
         enemy_field = self.field[attacker.part ^ 1]
 
-        tmp_field = [e for e in enemy_field if not e.destroyed]
+        tmp_field = [e for e in enemy_field if e.has_buff("在场")]
         # 随机化
         random.shuffle(tmp_field)
         for t in our_field:
@@ -121,41 +118,23 @@ class Battle:
                 event_bus.publish(AttackEvent(t, tmp_field[0]))  # 随机攻击某一个法宝
                 return
 
-    def _check_death(self, t: BattleEntity):
-        """检查法宝死亡"""
-        if t.health > 0:
-            return
-
-        if isinstance(t, Treasure):
-            t.destroyed = True
-            battle_logger.log("destroy", f"{t.name}被摧毁！", d_type="treasure", id=t.id)
-        else:
-            battle_logger.log("destroy", f"{t.name}死亡！", d_type="player", id=t.id)
-
     def register_event_attack(self, event: AttackEvent):
         attacker, defender = event.source, event.target
-        dmg_event = DamageEvent(attacker, defender, attacker.attack, defender.attack)
-        battle_logger.log("attack", f"{attacker.name}攻击了{defender.name}", attacker_id=attacker.id,
-                  defender_id=defender.id)
+        dmg_event = BeforeDamageEvent(attacker, defender, attacker.attack, defender.attack)
         event_bus.publish(dmg_event)
         if not dmg_event.prevented:
+            battle_logger.log("attack", f"{attacker.name}攻击了{defender.name}", attacker_id=attacker.id,
+                              defender_id=defender.id)
             if dmg_event.attack_deal_damage > 0:
                 defender.health -= dmg_event.attack_deal_damage
-                battle_logger.log("deal_damage", f"{attacker.name}对{defender.name}造成了{dmg_event.attack_deal_damage}点伤害！",
-                          damage=dmg_event.attack_deal_damage, attacker_id=attacker.id, defender_id=defender.id,
-                          defender_hp=defender.health)
+                event_bus.publish(DamageEvent(attacker, defender, dmg_event.attack_deal_damage))
 
             if dmg_event.defend_deal_damage > 0:
                 attacker.health -= dmg_event.defend_deal_damage
-                battle_logger.log("deal_damage", f"{defender.name}对{attacker.name}造成了{dmg_event.defend_deal_damage}点伤害！",
-                          damage=dmg_event.attack_deal_damage, attacker_id=defender.id, defender_id=attacker.id,
-                          defender_hp=attacker.health)
+                event_bus.publish(DamageEvent(attacker, defender, dmg_event.attack_deal_damage))
 
-        self._check_death(defender)
-        self._check_death(attacker)
+            if dmg_event.attack_deal_damage > 0:
+                event_bus.publish(AfterDamageEvent(attacker, defender, dmg_event.attack_deal_damage))
 
-        #
-        # def _direct_attack(self, attacker, defender):
-        #     defender.hp -= attacker.attack
-        #     print(f"{defender}受到了{attacker.attack}点伤害！")
-        #     pass
+            if dmg_event.defend_deal_damage > 0:
+                event_bus.publish(AfterDamageEvent(defender, attacker, dmg_event.defend_deal_damage))

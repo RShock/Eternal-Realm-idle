@@ -2,7 +2,9 @@ import inspect
 import sys
 
 from src.core.base_buff import Buff
-from src.core.event import AppendBuffEvent, EventBus, CouldAttackEvent, EndTurnEvent, DamageEvent, NewTurnEvent
+from src.core.entity import BattleEntity
+from src.core.event import AppendBuffEvent, EventBus, CouldAttackEvent, EndTurnEvent, BeforeDamageEvent, NewTurnEvent, \
+    DeathEvent, AfterDamageEvent, DamageEvent
 from src.core.logger import battle_logger
 from src.model.basic import Treasure
 from src.model.player import Player
@@ -10,6 +12,41 @@ from src.model.player import Player
 event_bus = EventBus()
 
 INF = 999999
+
+
+class 在场(Buff):
+    def __init__(self, owner):
+        super().__init__("在场", owner, duration=INF, priority=-1)
+        self.add_subscription(AfterDamageEvent, self.after_damage_event)
+        self.add_subscription(DamageEvent, self.damage_event)
+
+    def after_damage_event(self, event: AfterDamageEvent):
+        owner: BattleEntity = self.owner
+        if event.target == owner:
+            if (owner.health <= 0 or owner.max_health <= 0):
+                owner.add_buff("死了")
+                self.on_expire()
+                if isinstance(owner, Treasure):
+                    battle_logger.log("destroy", f"{owner.name}被摧毁！", d_type="treasure", id=owner.id)
+                    owner.owner.ally_board.remove(owner)
+                if isinstance(owner, Player):
+                    battle_logger.log("destroy", f"{owner.name}死亡！", d_type="player", id=owner.id)
+
+    def damage_event(self, event: DamageEvent):
+        if event.source != self.owner:
+            return
+        attacker = event.source
+        defender = event.target
+        battle_logger.log("deal_damage",
+                          f"{attacker.name}对{defender.name}造成了{event.attack_deal_damage}点伤害！",
+                          damage=event.attack_deal_damage, attacker_id=attacker.id, defender_id=defender.id,
+                          defender_hp=defender.health)
+
+
+
+class 死了(Buff):
+    def __init__(self, owner):
+        super().__init__("死了", owner, duration=INF)
 
 
 class 召唤失调(Buff):
@@ -46,32 +83,31 @@ class 被冻结(Buff):
 
     def _check_expire(self, event: EndTurnEvent):
         """检查是否应该解除冰冻"""
-        if self.owner.owner == event.turn_owner and not self.owner.contains_buff("行动完毕"):
+        owner = get_player_owner(self)
+        if owner == event.turn_owner and not self.owner.has_buff("行动完毕") and self.owner.has_buff("在场"):
             self.on_expire()
-            battle_logger.log("解除冻结", f"{self.owner.name} 被解除了冰冻")
+            battle_logger.log("remove_buff", f"{self.owner.name} 解除了冰冻", id=self.owner.id, buff_type="freeze")
 
 
 class 冰冻(Buff):
     """ 冻结对其造成伤害的目标"""
-
     def __init__(self, owner):
         super().__init__("冰冻", owner, duration=INF)
 
-        self.add_subscription(DamageEvent, self.on_deal_damage)
+        self.add_subscription(AfterDamageEvent, self.on_deal_damage)
 
-    def on_deal_damage(self, event: DamageEvent):
-        if event.source == self.owner:
-            event.target.add_buff("被冻结")
-            battle_logger.log("freeze",
-                              f"{self.owner.name}冻结了{event.target.name}",
-                              source_id=self.owner.id,
-                              target_id=event.target.id)
-        if event.target == self.owner:
-            event.source.add_buff("被冻结")
-            battle_logger.log("freeze",
-                              f"{self.owner.name}冻结了{event.source.name}",
-                              source_id=self.owner.id,
-                              target_id=event.source.id)
+    def on_deal_damage(self, event: AfterDamageEvent):
+        if event.source != self.owner:
+            return
+        t = event.target
+        if t.has_buff("被冻结"):
+            return
+        t.add_buff("被冻结")
+        battle_logger.log("add_buff",
+                          f"{self.owner.name}冻结了{t.name}",
+                          source_id=self.owner.id,
+                          target_id=t.id,
+                          buff_type="冰冻")
 
 
 class 嘲讽(Buff):
@@ -103,12 +139,27 @@ class 回合开始所有法宝加buff(Buff):
                               health=target.health)
 
 
+def get_player_owner(t: Buff):
+    t = t.owner
+    if isinstance(t, Treasure):
+        return t.owner
+    if isinstance(t, Player):
+        return t
+
+
+def get_opponent_board(t: Treasure | Player):
+    if isinstance(t, Treasure):
+        return t.owner.opponent_board
+    if isinstance(t, Player):
+        return t.opponent_board
+
+
 class 回合结束所有法宝加buff(Buff):
     def __init__(self, owner):
         super().__init__("回合结束所有法宝加buff", owner, duration=INF)
         self.add_subscription(EndTurnEvent, self.on_turn_end)
 
-    def on_turn_end(self, event: NewTurnEvent):
+    def on_turn_end(self, event: EndTurnEvent):
         player = None
         if isinstance(self.owner, Treasure):
             if self.owner in self.owner.owner.hand:
@@ -125,6 +176,30 @@ class 回合结束所有法宝加buff(Buff):
                               source_id=self.owner.id,
                               attack=target.attack,
                               health=target.health)
+
+
+class 亡语随机打(Buff):
+    def __init__(self, owner):
+        super().__init__("亡语随机打", owner, duration=INF)
+        self.add_subscription(DeathEvent, self.on_death)
+
+    def on_death(self, event: DeathEvent):
+        """当实体死亡时触发，随机选择一个目标进行攻击"""
+        if event.source == self.owner:
+            # 获取所有存活的目标
+            alive_targets = [entity for entity in self.owner.owner.opponent.entities
+                             if entity.health > 0]
+
+            if alive_targets:
+                import random
+                target = random.choice(alive_targets)
+                # 创建攻击事件
+                attack_event = AttackEvent(self.owner, target)
+                event_bus.publish(attack_event)
+                battle_logger.log("亡语触发",
+                                  f"{self.owner.name}死亡后随机攻击了{target.name}",
+                                  source_id=self.owner.id,
+                                  target_id=target.id)
 
 
 # 自动收集buff类用于创建
